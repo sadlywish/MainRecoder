@@ -1,5 +1,6 @@
 package com.group.mainrecoder;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,6 +13,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 public class MainActivity extends ActionBarActivity {
 	final Activity activity = this;
 	private MediaRecorder mediaRecorder;
+
 	public class TimeStep {
 		private long timestep = 0;
 		private boolean isRecoding = false;
@@ -72,10 +76,35 @@ public class MainActivity extends ActionBarActivity {
 					chronometer.setBase(SystemClock.elapsedRealtime()
 							- recoderTime.getTimestep());
 				}
-				TextView textView = (TextView) activity.findViewById(R.id.stauts);
+				TextView textView = (TextView) activity
+						.findViewById(R.id.stauts);
 				textView.setText("录音中");
 				recoderTime.setTimestep(1);
 				recoderTime.setRecoding(true);
+				try {
+					File file = new File("/sdcard/mediarecorder.amr");
+					if (file.exists()) {
+						// 如果文件存在，删除它，演示代码保证设备上只有一个录音文件
+						file.delete();
+					}
+					mediaRecorder = new MediaRecorder();
+					// 设置音频录入源
+					mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+					// 设置录制音频的输出格式
+					mediaRecorder
+							.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+					// 设置音频的编码格式
+					mediaRecorder
+							.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+					// 设置录制音频文件输出文件路径
+					mediaRecorder.setOutputFile(file.getAbsolutePath());
+
+					// 准备、开始
+					mediaRecorder.prepare();
+					mediaRecorder.start();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				chronometer.start();
 			}
 		});
@@ -91,8 +120,10 @@ public class MainActivity extends ActionBarActivity {
 				// TODO Auto-generated method stub
 				Chronometer chronometer = (Chronometer) findViewById(R.id.timestep);
 				long thistime = chronometer.getBase();
-				recoderTime.setTimestep(SystemClock.elapsedRealtime() - thistime);
-				TextView textView = (TextView) activity.findViewById(R.id.stauts);
+				recoderTime.setTimestep(SystemClock.elapsedRealtime()
+						- thistime);
+				TextView textView = (TextView) activity
+						.findViewById(R.id.stauts);
 				textView.setText("录音暂停");
 				chronometer.stop();
 				recoderTime.setRecoding(false);
@@ -103,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (recoderTime.getTimestep()<1) {
+				if (recoderTime.getTimestep() < 1) {
 					return;
 				}
 				Chronometer chronometer = (Chronometer) findViewById(R.id.timestep);
@@ -116,10 +147,22 @@ public class MainActivity extends ActionBarActivity {
 				SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 				textView.setText(df.format(new Date()));
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("保存录音").setView(view).setPositiveButton("保存", null)
-						.setNegativeButton("放弃", null).create().show();
+				builder.setTitle("保存录音").setView(view)
+						.setNegativeButton("保存", new  OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+					            // 如果正在录音，停止并释放资源
+					            mediaRecorder.stop();
+					            mediaRecorder.release();
+					            mediaRecorder = null;
+								
+							}
+						})
+						.setPositiveButton("放弃", null).create().show();
 				recoderTime.setRecoding(false);
-				TextView textView1 = (TextView) activity.findViewById(R.id.stauts);
+				TextView textView1 = (TextView) activity
+						.findViewById(R.id.stauts);
 				textView1.setText("");
 			}
 		});
@@ -138,11 +181,10 @@ public class MainActivity extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id==R.id.action_index) {
+		if (id == R.id.action_index) {
 			Intent fileListIntent = new Intent(this, FileListActivity.class);
 			startActivity(fileListIntent);
-			
-			
+
 		}
 		return super.onOptionsItemSelected(item);
 	}
