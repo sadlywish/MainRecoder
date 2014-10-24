@@ -1,0 +1,104 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.bjtu.mysoundrecorder.PlayerActivity" >
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+	    android:background="#FFFFFF"
+	    android:orientation="vertical" >
+
+	    <!-- 显示删除按钮 -->
+
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:background="#FFFFFF"
+	        android:orientation="horizontal" >
+
+	        <Button
+	            android:id="@+id/DeleteButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/delete" />
+	    </LinearLayout>
+
+	    <!-- 显示录音信息 -->
+
+	    <TextView
+	        android:id="@+id/SoundMessage"
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:text="我的第一个录音" />
+
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:background="#FFFFFF"
+	        android:orientation="horizontal" >
+	    </LinearLayout>
+
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:background="#FFFFFF"
+	        android:orientation="horizontal" >
+
+	        <SeekBar
+	            android:id="@+id/SeekBar"
+	            android:layout_width="290dp"
+	            android:layout_height="wrap_content" />
+	    </LinearLayout>
+
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:orientation="horizontal" >
+
+	        <Button
+	            android:id="@+id/LastButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/last" />
+
+	        <Button
+	            android:id="@+id/StarButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/start" />
+	        <Button
+	            android:id="@+id/StopButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/stop" />
+	        <!--  -->
+	        <Button
+	            android:id="@+id/PauseButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/pause" />
+
+	        <Button
+	            android:id="@+id/NextButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/next" />
+
+
+	    </LinearLayout>
+	</LinearLayout>
+
+</RelativeLayout>
