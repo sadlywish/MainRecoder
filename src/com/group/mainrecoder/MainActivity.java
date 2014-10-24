@@ -16,8 +16,10 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,8 +58,8 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		final Activity activity = this;
+//		SharedPreferences sharedPref = new Activity().getPreferences(activity.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 		final TimeStep recoderTime = new TimeStep();
 		setContentView(R.layout.activity_main);
 		Button start = (Button) findViewById(R.id.start);
@@ -82,21 +84,33 @@ public class MainActivity extends ActionBarActivity {
 				recoderTime.setTimestep(1);
 				recoderTime.setRecoding(true);
 				try {
-					File file = new File("/sdcard/mediarecorder.amr");
+					String pathStr = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath()+"/test.amr";
+					File file = new File(pathStr);
+					file.mkdirs();
+					System.out.println(file.getAbsolutePath());
+//					if (file.createNewFile()) {
+//						System.out.println(file.getAbsolutePath());
+//						System.out.println("creat on");
+//					}
+//					File file = new File("/storage/sdcard1/mediarecorder.arm");
 					if (file.exists()) {
 						// 如果文件存在，删除它，演示代码保证设备上只有一个录音文件
 						file.delete();
+						System.out.println("delete");
 					}
 					mediaRecorder = new MediaRecorder();
 					// 设置音频录入源
 					mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 					// 设置录制音频的输出格式
 					mediaRecorder
-							.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+							.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
 					// 设置音频的编码格式
 					mediaRecorder
-							.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-					// 设置录制音频文件输出文件路径
+							.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+					//创建一个临时的音频输出文件
+//					File audioFile = File.createTempFile("record_", ".amr");
+
+					//第4步：指定音频输出文件
 					mediaRecorder.setOutputFile(file.getAbsolutePath());
 
 					// 准备、开始
@@ -146,6 +160,7 @@ public class MainActivity extends ActionBarActivity {
 				TextView textView = (TextView) view.findViewById(R.id.rename);
 				SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 				textView.setText(df.format(new Date()));
+	            mediaRecorder.stop();
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 				builder.setTitle("保存录音").setView(view)
 						.setNegativeButton("保存", new  OnClickListener() {
@@ -153,7 +168,6 @@ public class MainActivity extends ActionBarActivity {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 					            // 如果正在录音，停止并释放资源
-					            mediaRecorder.stop();
 					            mediaRecorder.release();
 					            mediaRecorder = null;
 								
