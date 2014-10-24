@@ -52,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		final Activity activity = this;
 		final TimeStep recoderTime = new TimeStep();
 		setContentView(R.layout.activity_main);
