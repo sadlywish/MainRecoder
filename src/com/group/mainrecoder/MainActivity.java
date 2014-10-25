@@ -18,6 +18,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaRecorder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -31,153 +32,101 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 	final Activity activity = this;
-	private MediaRecorder mediaRecorder;
-
-	public class TimeStep {
-		private long timestep = 0;
-		private boolean isRecoding = false;
-
-		public boolean isRecoding() {
-			return isRecoding;
-		}
-
-		public void setRecoding(boolean isRecoding) {
-			this.isRecoding = isRecoding;
-		}
-
-		public long getTimestep() {
-			return timestep;
-		}
-
-		public void setTimestep(long timestep) {
-			this.timestep = timestep;
-		}
-
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		final Activity activity = this;
-//		SharedPreferences sharedPref = new Activity().getPreferences(activity.MODE_ENABLE_WRITE_AHEAD_LOGGING);
-		final TimeStep recoderTime = new TimeStep();
 		setContentView(R.layout.activity_main);
+		final Activity activity = this;
+		// SharedPreferences sharedPref = new
+		// Activity().getPreferences(activity.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 		Button start = (Button) findViewById(R.id.start);
+		Button stop = (Button) findViewById(R.id.stop);	
+		Button pause = (Button) findViewById(R.id.pause);
+		if (RecoderFactory.isRecoding()) {
+			Chronometer chronometer = (Chronometer) findViewById(R.id.timestep);
+			chronometer.setBase(RecoderFactory.getBaseTime());
+			chronometer.start();
+			start.setEnabled(false);
+			TextView textView = (TextView) activity
+					.findViewById(R.id.stauts);
+			textView.setText("录音中");
+		}else {
+				stop.setEnabled(false);
+		}
 		start.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (recoderTime.isRecoding) {
-					return;
-				}
 				Chronometer chronometer = (Chronometer) findViewById(R.id.timestep);
-				if (recoderTime.getTimestep() < 1) {
+				if (RecoderFactory.getTimestep() < 1) {
 					chronometer.setBase(SystemClock.elapsedRealtime());
 				} else {
 					chronometer.setBase(SystemClock.elapsedRealtime()
-							- recoderTime.getTimestep());
+							- RecoderFactory.getTimestep());
 				}
 				TextView textView = (TextView) activity
 						.findViewById(R.id.stauts);
 				textView.setText("录音中");
-				recoderTime.setTimestep(1);
-				recoderTime.setRecoding(true);
-				try {
-					String pathStr = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath()+"/test.amr";
-					File file = new File(pathStr);
-					file.mkdirs();
-					System.out.println(file.getAbsolutePath());
-//					if (file.createNewFile()) {
-//						System.out.println(file.getAbsolutePath());
-//						System.out.println("creat on");
-//					}
-//					File file = new File("/storage/sdcard1/mediarecorder.arm");
-					if (file.exists()) {
-						// 如果文件存在，删除它，演示代码保证设备上只有一个录音文件
-						file.delete();
-						System.out.println("delete");
-					}
-					mediaRecorder = new MediaRecorder();
-					// 设置音频录入源
-					mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-					// 设置录制音频的输出格式
-					mediaRecorder
-							.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-					// 设置音频的编码格式
-					mediaRecorder
-							.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-					//创建一个临时的音频输出文件
-//					File audioFile = File.createTempFile("record_", ".amr");
-
-					//第4步：指定音频输出文件
-					mediaRecorder.setOutputFile(file.getAbsolutePath());
-
-					// 准备、开始
-					mediaRecorder.prepare();
-					mediaRecorder.start();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				RecoderFactory.start();
 				chronometer.start();
+				Button start = (Button) findViewById(R.id.start);
+				start.setEnabled(false);
+				Button stop = (Button) findViewById(R.id.stop);	
+				stop.setEnabled(true);
 			}
 		});
-		Button pause = (Button) findViewById(R.id.pause);
+
 		pause.setEnabled(false);
 		pause.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (!recoderTime.isRecoding) {
+				if (!RecoderFactory.isRecoding()) {
 					return;
 				}
 				// TODO Auto-generated method stub
 				Chronometer chronometer = (Chronometer) findViewById(R.id.timestep);
 				long thistime = chronometer.getBase();
-				recoderTime.setTimestep(SystemClock.elapsedRealtime()
-						- thistime);
+
 				TextView textView = (TextView) activity
 						.findViewById(R.id.stauts);
 				textView.setText("录音暂停");
 				chronometer.stop();
-				recoderTime.setRecoding(false);
+				RecoderFactory.setRecoding(false);
 			}
 		});
-		Button stop = (Button) findViewById(R.id.stop);
 		stop.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (recoderTime.getTimestep() < 1) {
-					return;
-				}
 				Chronometer chronometer = (Chronometer) findViewById(R.id.timestep);
 				chronometer.setBase(SystemClock.elapsedRealtime());
 				chronometer.stop();
-				recoderTime.setTimestep(0);
+				RecoderFactory.stop();
 				LayoutInflater inflater = LayoutInflater.from(activity);
 				final View view = inflater.inflate(R.layout.renamedialog, null);
 				TextView textView = (TextView) view.findViewById(R.id.rename);
 				SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 				textView.setText(df.format(new Date()));
-	            mediaRecorder.stop();
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 				builder.setTitle("保存录音").setView(view)
-						.setNegativeButton("保存", new  OnClickListener() {
-							
+						.setNegativeButton("保存", new OnClickListener() {
+
 							@Override
-							public void onClick(DialogInterface dialog, int which) {
-					            // 如果正在录音，停止并释放资源
-					            mediaRecorder.release();
-					            mediaRecorder = null;
-								
+							public void onClick(DialogInterface dialog,
+									int which) {
+								RecoderFactory.setRecoding(false);
 							}
-						})
-						.setPositiveButton("放弃", null).create().show();
-				recoderTime.setRecoding(false);
+						}).setPositiveButton("放弃", null).create().show();
+
 				TextView textView1 = (TextView) activity
 						.findViewById(R.id.stauts);
 				textView1.setText("");
+				Button start = (Button) findViewById(R.id.start);
+				start.setEnabled(true);
+				Button stop = (Button) findViewById(R.id.stop);	
+				stop.setEnabled(false);
 			}
 		});
 	}
@@ -202,4 +151,6 @@ public class MainActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	
 }

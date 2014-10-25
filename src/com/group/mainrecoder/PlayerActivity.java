@@ -1,22 +1,28 @@
 package com.group.mainrecoder;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 
 import com.example.mainrecoder.R;
 
 public class PlayerActivity extends ActionBarActivity {
+	final Activity activity = this;
 	// 定义播放器状态（真为有文件在播放）
 	private boolean stauts = false;
 	// 定义按钮
@@ -50,6 +56,10 @@ public class PlayerActivity extends ActionBarActivity {
 
 		// 构建Player对象，以及Button
 		mPlayer = new MediaPlayer();
+		SeekBar bar =  (SeekBar)activity.findViewById(R.id.SeekBar);
+		System.out.println("1");
+		bar.setMax(10000);
+		System.out.println("1");
 
 		DeleteButton = (Button) this.findViewById(R.id.DeleteButton);
 		LastButton = (Button) this.findViewById(R.id.LastButton);
@@ -89,7 +99,7 @@ public class PlayerActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				if (!stauts) {
 					// 当播放器内没有加载音频时，加载新音频
-					playMusic(MUSIC_PATH + mList.get(currentListItem));// 录音播放路径的获取……(未完成)
+					playMusic(MUSIC_PATH + mList.get(currentListItem));// 录音播放路径的获取……
 					stauts = true;
 				} else {
 					// 当播放器内有音频时，继续播放
@@ -211,5 +221,6 @@ public class PlayerActivity extends ActionBarActivity {
 		int id = item.getItemId();
 		return super.onOptionsItemSelected(item);
 	}
+
 
 }
