@@ -33,7 +33,7 @@ public class PlayerFactory {
 	public void inti(String path){
 		
 	}
-	public void play(){
+	public void play(String path){
 		
 	}
 	public void pause(){
