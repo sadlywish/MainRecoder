@@ -36,11 +36,6 @@ public class PlayerActivity extends ActionBarActivity {
 	// 声明Player
 	private MediaPlayer mPlayer = null;
 
-	// 音乐路径
-	private static final String MUSIC_PATH = new String(Environment
-			.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
-			.getPath()
-			+ "/");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +44,39 @@ public class PlayerActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_player);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle("录音播放");
-		// 更新显示播放列表
-		//musicList();
+		
+		init();
+		findView();
+		setListener();
+		
+	}
+		
 
-		// 构建Player对象，以及Button
+	// 构建Player对象
+	private void init(){
 		mPlayer = new MediaPlayer();
 		SeekBar bar =  (SeekBar)activity.findViewById(R.id.SeekBar);
 		System.out.println("1");
 		bar.setMax(10000);
 		System.out.println("1");
+	}
 
+	//构建Button对象
+	private void findView(){
 		DeleteButton = (Button) this.findViewById(R.id.DeleteButton);
 		LastButton = (Button) this.findViewById(R.id.LastButton);
 		SPButton = (Button) this.findViewById(R.id.SPButton);
 		StopButton = (Button) this.findViewById(R.id.StopButton);
 		NextButton = (Button) this.findViewById(R.id.NextButton);
+	
+	}
 
-		
+	private void setListener(){
 		// DeleteButton按钮(未完成……)
 		DeleteButton.setOnClickListener(new Button.OnClickListener() {
-
-			@Override
 			public void onClick(View arg0) {
 
 			}
-
 		});
 		
 
@@ -88,10 +91,11 @@ public class PlayerActivity extends ActionBarActivity {
 		// 开始/暂停按钮--开始、暂停切换操作
 		SPButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				SPButton.setText("暂停");
-				PlayerFactory.play();
+				if(!isIsprepare){
+					SPButton.setText("暂停");
+					PlayerFactory.play();
+				}
 			}
-
 		});
 		
 
@@ -109,7 +113,6 @@ public class PlayerActivity extends ActionBarActivity {
 				PlayerFactory.LastMusic();
 			}
 		});
-
 	}	
 
 	@Override

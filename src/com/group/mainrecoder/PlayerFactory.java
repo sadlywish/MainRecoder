@@ -14,12 +14,13 @@ public class PlayerFactory {
 	 */
 	static private MediaPlayer mediaPlayer = new MediaPlayer();
 	/**
-	 * 播放器是否已装载音频文件 用于防止部分异常和错误的产生
+	 * 判断播放器是否已装载音频文件 用于防止部分异常和错误的产生
 	 */
 	static private boolean isPrepare = false;
 
 	// 播放列表
 	static private List<String> mList = new ArrayList<String>();
+	
 	// 当前播放歌曲的索引
 	static int mListItem = 0;
 
@@ -39,6 +40,16 @@ public class PlayerFactory {
 		PlayerFactory.isPrepare = isprepare;
 	}
 
+	
+	/**
+	 * 使用文件名定位列表
+	 * 
+	 * @param fileName
+	 */
+	public static void selectByName(String fileName) {
+		//这里没写呢！！！
+	}
+	
 	/**
 	 * 初始化播放器
 	 * 
@@ -51,17 +62,8 @@ public class PlayerFactory {
 		mediaPlayer.setDataSource(path);
 		// 准备播放
 		mediaPlayer.prepare();
-
+		//更改播放器的状态值
 		isPrepare = true;
-	}
-	
-	/**
-	 * 使用文件名定位列表
-	 * 
-	 * @param fileName
-	 */
-	public static void selectByName(String fileName) {
-		
 	}
 
 	/**
@@ -72,8 +74,8 @@ public class PlayerFactory {
 	 */
 	public static void play() {
 		if (!isPrepare) {
-			// 当播放器内没有加载音频时，加载新音频
-			inti();// 初始化播放器
+			//当播放器内没有加载音频时，加载新音频
+			inti();
 		}
 		mediaPlayer.start();
 	}

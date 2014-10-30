@@ -36,19 +36,12 @@
 
 	    <TextView
 	        android:id="@+id/SoundMessage"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="0dp"
-	        android:layout_weight="1"
+	        android:layout_weight="1.26"
 	        android:text="我的第一个录音" />
 
-	    <LinearLayout
-	        android:layout_width="wrap_content"
-	        android:layout_height="0dp"
-	        android:layout_weight="1"
-	        android:background="#FFFFFF"
-	        android:orientation="horizontal" >
-	    </LinearLayout>
-
+	    <!-- 显示进度条 -->
 	    <LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="0dp"
@@ -62,6 +55,7 @@
 	            android:layout_height="wrap_content" />
 	    </LinearLayout>
 
+	    <!-- 显示播放器按钮 -->
 	    <LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="0dp"
@@ -80,14 +74,7 @@
 	            android:id="@+id/SPButton"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="@string/start" />
-	        
-	        <!-- 下一曲曲按钮 -->
-	        <Button
-	            android:id="@+id/NextButton"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/next" />
+	            android:text="@string/play" />	        
 	        
 	        <!-- 停止按钮 -->
 	        <Button
@@ -95,11 +82,16 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/stop" />
-
 	        
-
-
+	        <!-- 下一曲曲按钮 -->
+	        <Button
+	            android:id="@+id/NextButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/next" />
 	    </LinearLayout>
+	    
+	    
 	</LinearLayout>
 
 </RelativeLayout>
