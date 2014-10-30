@@ -14,7 +14,7 @@ public class FileManagement {
 	/**
 	 * 播放器，录音器存储路径后缀
 	 */
-	private static String playerDir = "/Recoder" ;
+	private static String playerDir = "/Recoder/" ;
 	/**
 	 * 录音器缓存文件路径后缀
 	 */
@@ -35,6 +35,12 @@ public class FileManagement {
 	 * @return 录音文件详细内容列表
 	 */
 	public static List<FileDetail> getMusicFileList(){
+		return null;
+	}	
+	/**
+	 * @return 录音文件名列表
+	 */
+	public static List<String> getMusicNameList(){
 		return null;
 	}
 	/**
