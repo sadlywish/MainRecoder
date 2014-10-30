@@ -32,9 +32,9 @@ public class FileManagement {
 		return Environment.DIRECTORY_MUSIC+tempPath;
 	} 
 	/**
-	 * @return 录音文件名表
+	 * @return 录音文件详细内容列表
 	 */
-	public static List<String> getMusicFileList(){
+	public static List<FileDetail> getMusicFileList(){
 		return null;
 	}
 	/**
