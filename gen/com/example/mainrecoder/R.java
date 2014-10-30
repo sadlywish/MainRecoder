@@ -1082,11 +1082,11 @@ containing a value of this type.
     public static final class id {
         public static final int DeleteButton=0x7f050043;
         public static final int LastButton=0x7f050046;
-        public static final int NextButton=0x7f050048;
+        public static final int NextButton=0x7f050049;
         public static final int SPButton=0x7f050047;
         public static final int SeekBar=0x7f050045;
         public static final int SoundMessage=0x7f050044;
-        public static final int StopButton=0x7f050049;
+        public static final int StopButton=0x7f050048;
         public static final int action_bar=0x7f05001c;
         public static final int action_bar_activity_content=0x7f050015;
         public static final int action_bar_container=0x7f05001b;
