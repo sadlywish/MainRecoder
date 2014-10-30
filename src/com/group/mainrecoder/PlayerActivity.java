@@ -24,14 +24,15 @@ import com.example.mainrecoder.R;
 public class PlayerActivity extends ActionBarActivity {
 	final Activity activity = this;
 	// 定义播放器状态（真为有文件在播放）
-	private boolean stauts = false;
+	private boolean isIsprepare = false;
+	
 	// 定义按钮
 	private Button DeleteButton = null;
 	private Button LastButton = null;
-	private Button StarButton = null;
+	private Button SPButton = null;
 	private Button StopButton = null;
-	private Button PauseButton = null;
 	private Button NextButton = null;
+	
 	// 声明Player
 	private MediaPlayer mPlayer = null;
 
@@ -60,65 +61,53 @@ public class PlayerActivity extends ActionBarActivity {
 
 		DeleteButton = (Button) this.findViewById(R.id.DeleteButton);
 		LastButton = (Button) this.findViewById(R.id.LastButton);
-		StarButton = (Button) this.findViewById(R.id.StarButton);
+		SPButton = (Button) this.findViewById(R.id.SPButton);
 		StopButton = (Button) this.findViewById(R.id.StopButton);
-		PauseButton = (Button) this.findViewById(R.id.PauseButton);
 		NextButton = (Button) this.findViewById(R.id.NextButton);
 
+		
 		// DeleteButton按钮(未完成……)
 		DeleteButton.setOnClickListener(new Button.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 		});
+		
 
-		// 停止按钮
+		// 停止按钮--停止播放操作
 		StopButton.setOnClickListener(new Button.OnClickListener() {
-
-			@Override
 			public void onClick(View v) {
 				PlayerFactory.stop();
 			}
 		});
+		
 
-		// 开始按钮
-		StarButton.setOnClickListener(new Button.OnClickListener() {
-
-			@Override
+		// 开始/暂停按钮--开始、暂停切换操作
+		SPButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
-				StarButton.setText("暂停");
+				SPButton.setText("暂停");
 				PlayerFactory.play();
 			}
 
 		});
+		
 
-		// 暂停按钮
-		PauseButton.setOnClickListener(new Button.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				PlayerFactory.pause();	
-			}
-
-		});
-
-		// Next按钮
+		// Next按钮--下一曲操作
 		NextButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View arg0) {
 				PlayerFactory.nextMusic();
 			}
 		});
+		
 
-		// Last按钮
+		// Last按钮--上一曲操作
 		LastButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View arg0) {
 				PlayerFactory.LastMusic();
 			}
-
 		});
 
 	}	

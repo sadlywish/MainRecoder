@@ -23,14 +23,6 @@ public class PlayerFactory {
 	// 当前播放歌曲的索引
 	static int mListItem = 0;
 
-	// 使用文件名定位列表
-	/**
-	 * @param fileName
-	 */
-	public static void selectByName(String fileName) {
-		
-	}
-
 	public static MediaPlayer getMediaPlayer() {
 		return mediaPlayer;
 	}
@@ -50,8 +42,7 @@ public class PlayerFactory {
 	/**
 	 * 初始化播放器
 	 * 
-	 * @param path
-	 *            音频文件路径
+	 * @param path 音频文件路径
 	 */
 	private static void inti() {
 		// 重置mPlayer
@@ -62,6 +53,15 @@ public class PlayerFactory {
 		mediaPlayer.prepare();
 
 		isPrepare = true;
+	}
+	
+	/**
+	 * 使用文件名定位列表
+	 * 
+	 * @param fileName
+	 */
+	public static void selectByName(String fileName) {
+		
 	}
 
 	/**
@@ -76,15 +76,6 @@ public class PlayerFactory {
 			inti();// 初始化播放器
 		}
 		mediaPlayer.start();
-	}
-
-	/**
-	 * 更换播放音频，用于上一曲下一曲或顺序播放 直接调用本方法，无需手动停止和初始化播放器
-	 * 
-	 * @param path
-	 */
-	public static void changePlay(String path) {
-
 	}
 
 	public static void pause() {

@@ -68,34 +68,35 @@
 	        android:layout_weight="1"
 	        android:orientation="horizontal" >
 
+	        <!-- 上一曲按钮 -->
 	        <Button
 	            android:id="@+id/LastButton"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/last" />
 
+	        <!-- 播放/暂停按钮 -->
 	        <Button
-	            android:id="@+id/StarButton"
+	            android:id="@+id/SPButton"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/start" />
-	        <Button
-	            android:id="@+id/StopButton"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/stop" />
-	        <!--  -->
-	        <Button
-	            android:id="@+id/PauseButton"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/pause" />
-
+	        
+	        <!-- 下一曲曲按钮 -->
 	        <Button
 	            android:id="@+id/NextButton"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/next" />
+	        
+	        <!-- 停止按钮 -->
+	        <Button
+	            android:id="@+id/StopButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/stop" />
+
+	        
 
 
 	    </LinearLayout>

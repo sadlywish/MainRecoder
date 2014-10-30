@@ -10,8 +10,8 @@
     <string name="action_index">浏览录音文件</string>
     <string name="detail">详细</string>
     <string name="play">播放</string>
-    <string name="last">《《</string>
-    <string name="next">》》</string>
+    <string name="last">上一曲</string>
+    <string name="next">下一曲</string>
     <string name="delete">删除</string>
     <string name="back">Back</string>
     <string name="action_rename">重命名</string>
