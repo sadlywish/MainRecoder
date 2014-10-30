@@ -1,5 +1,7 @@
 package com.group.mainrecoder;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.net.rtp.RtpStream;
@@ -41,7 +43,15 @@ public class FileManagement {
 	 * @return 录音文件名列表
 	 */
 	public static List<String> getMusicNameList(){
-		return null;
+		File file = new File(getPlayerDir());
+		File[] musics = file.listFiles();
+		List<String> nameList = new ArrayList<String>();
+		for (int i = 0; i < musics.length; i++) {
+			if (musics[i].isFile()) {
+				nameList.add(musics[i].getName());
+			}
+		}
+		return nameList;
 	}
 	/**
 	 * 该方法仅能修改录音文件夹内的文件名

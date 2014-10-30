@@ -3,7 +3,17 @@ package com.group.mainrecoder;
 public class FileDetail {
 	private String fileName;
 	private long time;
-	private long creatTime;
+	private long modiTime;
+	
+	/**
+	 * 利用文件名获取对应信息的构造方法
+	 * @param filename
+	 */
+	public FileDetail(String filename){
+		
+	}
+	
+	
 	public String getFileName() {
 		return fileName;
 	}
@@ -25,11 +35,11 @@ public class FileDetail {
 	/**
 	 * @return 文本化的创建时间格式（yy-mm-dd-hh：mm）
 	 */
-	public String getCreatTime() {
+	public String getModiTimeTime() {
 		return null;
 	}
-	public void setCreatTime(long creatTime) {
-		this.creatTime = creatTime;
+	public void setModiTime(long modiTime) {
+		this.modiTime = modiTime;
 	}
 	
 
