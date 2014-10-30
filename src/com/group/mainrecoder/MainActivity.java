@@ -29,9 +29,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	final Activity activity = this;
+	TextView textView;
+	Button start;
+	Button stop;
+	Button pause;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,19 +45,23 @@ public class MainActivity extends ActionBarActivity {
 		final Activity activity = this;
 		// SharedPreferences sharedPref = new
 		// Activity().getPreferences(activity.MODE_ENABLE_WRITE_AHEAD_LOGGING);
-		Button start = (Button) findViewById(R.id.start);
-		Button stop = (Button) findViewById(R.id.stop);	
-		Button pause = (Button) findViewById(R.id.pause);
+		start = (Button) findViewById(R.id.start);
+		stop = (Button) findViewById(R.id.stop);
+		pause = (Button) findViewById(R.id.pause);
 		if (RecoderFactory.isRecoding()) {
 			Chronometer chronometer = (Chronometer) findViewById(R.id.timestep);
 			chronometer.setBase(RecoderFactory.getBaseTime());
 			chronometer.start();
 			start.setEnabled(false);
-			TextView textView = (TextView) activity
-					.findViewById(R.id.stauts);
-			textView.setText("录音中");
-		}else {
-				stop.setEnabled(false);
+			TextView textView = (TextView) activity.findViewById(R.id.stauts);
+			if (RecoderFactory.ispause()) {
+				textView.setText("录音暂停");
+			} else {
+				textView.setText("录音中");
+			}
+		} else {
+			stop.setEnabled(false);
+			pause.setEnabled(false);
 		}
 		start.setOnClickListener(new View.OnClickListener() {
 
@@ -70,14 +80,11 @@ public class MainActivity extends ActionBarActivity {
 				textView.setText("录音中");
 				RecoderFactory.start();
 				chronometer.start();
-				Button start = (Button) findViewById(R.id.start);
 				start.setEnabled(false);
-				Button stop = (Button) findViewById(R.id.stop);	
 				stop.setEnabled(true);
+				pause.setEnabled(true);
 			}
 		});
-
-		pause.setEnabled(false);
 		pause.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -93,7 +100,10 @@ public class MainActivity extends ActionBarActivity {
 						.findViewById(R.id.stauts);
 				textView.setText("录音暂停");
 				chronometer.stop();
-				RecoderFactory.setRecoding(false);
+				RecoderFactory.pause();
+				start.setEnabled(true);
+				stop.setEnabled(false);
+				pause.setEnabled(false);
 			}
 		});
 		stop.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +116,7 @@ public class MainActivity extends ActionBarActivity {
 				RecoderFactory.stop();
 				LayoutInflater inflater = LayoutInflater.from(activity);
 				final View view = inflater.inflate(R.layout.renamedialog, null);
-				TextView textView = (TextView) view.findViewById(R.id.rename);
+				textView = (TextView) view.findViewById(R.id.rename);
 				SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 				textView.setText(df.format(new Date()));
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -116,17 +126,27 @@ public class MainActivity extends ActionBarActivity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								RecoderFactory.setRecoding(false);
+								String name = RecoderFactory
+										.save((String) textView.getText());
+								Toast.makeText(activity, name,
+										Toast.LENGTH_SHORT);
 							}
-						}).setPositiveButton("放弃", null).create().show();
+						}).setPositiveButton("放弃", new OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								RecoderFactory.cancle();
+
+							}
+						}).create().show();
 
 				TextView textView1 = (TextView) activity
 						.findViewById(R.id.stauts);
 				textView1.setText("");
-				Button start = (Button) findViewById(R.id.start);
 				start.setEnabled(true);
-				Button stop = (Button) findViewById(R.id.stop);	
 				stop.setEnabled(false);
+				pause.setEnabled(false);
 			}
 		});
 	}
@@ -152,5 +172,4 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	
 }

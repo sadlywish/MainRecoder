@@ -11,6 +11,7 @@ public class RecoderFactory {
 	private static long baseTime = 0;
 	private static long timestep = 0;
 	private static boolean isRecoding = false;
+	private static int count = 1;//记录暂停数
 
 	public static long getTimestep() {
 		return timestep;
@@ -42,16 +43,14 @@ public class RecoderFactory {
 
 	public static void start() {
 		try {
-			String pathStr = Environment.getExternalStoragePublicDirectory(
-					Environment.DIRECTORY_MUSIC).getPath()
-					+ "/test.amr";
+			String pathStr = FileManagement.getTempsfile(count);
 			File file = new File(pathStr);
 			file.mkdirs();
-			System.out.println(file.getAbsolutePath());
+//			System.out.println(file.getAbsolutePath());
 			if (file.exists()) {
 				// 如果文件存在，删除它，演示代码保证设备上只有一个录音文件
 				file.delete();
-				System.out.println("delete");
+//				System.out.println("delete");
 			}
 			mediaRecorder = new MediaRecorder();
 			// 设置音频录入源
@@ -69,8 +68,10 @@ public class RecoderFactory {
 			// 准备、开始
 			mediaRecorder.prepare();
 			mediaRecorder.start();
-			setBaseTime(SystemClock.elapsedRealtime());
-			setTimestep(1);
+			if (count ==1) {
+				setBaseTime(SystemClock.elapsedRealtime());
+				setTimestep(1);
+			}
 			setRecoding(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,6 +88,27 @@ public class RecoderFactory {
 
 	public static void pause() {
 		setTimestep(SystemClock.elapsedRealtime() - baseTime);
+		setRecoding(false);
+		mediaRecorder.stop();
+		mediaRecorder.release();
+		mediaRecorder = null;
+		count++;
 	}
-
+	
+	public static String save (String fileName){
+		String finalName = FileManagement.saveTempFile(fileName, count);
+		FileManagement.clearTempDir();
+		count = 1;
+		return finalName;
+	}
+	public static void cancle(){
+		FileManagement.clearTempDir();
+		count = 1;
+	}
+	public static boolean ispause(){
+		if (count>1) {
+			return true;
+		}
+		return false;
+	}
 }

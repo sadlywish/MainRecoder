@@ -29,8 +29,10 @@ public class DetailListFragment extends ListFragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		String[] titles = {"文件名:", "时长:", "录制时间:" };
-		String[] details = {"1.mp3", "00：04：23.00", "2014-10-16" };
+		String fileName = "";
+		String[] titles = {"文件名:", "时长:", "最后修改时间:" };
+		FileDetail detail = new FileDetail(fileName);
+		String[] details = {detail.getFileName(), detail.getSringTime(), detail.getModiTimeTime() };
 		List<Map<String, String>> textList = new ArrayList<Map<String,String>>();
 		for (int i = 0; i < details.length; i++) {
 			Map<String, String> allText = new HashMap<String, String>();
