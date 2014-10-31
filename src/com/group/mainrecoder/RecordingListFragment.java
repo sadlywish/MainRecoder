@@ -57,7 +57,7 @@ public class RecordingListFragment extends ListFragment {
 
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("title", details.get(i).getFileName());
-			map.put("info", details.get(i).getTime());
+			map.put("info","时间长度:"+ details.get(i).getTime());
 			// map.put("img", R.drawable.i1);
 			list.add(map);
 		}
