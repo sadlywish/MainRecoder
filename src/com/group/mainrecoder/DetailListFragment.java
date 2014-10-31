@@ -29,7 +29,7 @@ public class DetailListFragment extends ListFragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		String fileName = "";
+		String fileName = getActivity().getIntent().getStringExtra("filename");
 		String[] titles = {"文件名:", "时长:", "最后修改时间:" };
 		FileDetail detail = new FileDetail(fileName);
 		String[] details = {detail.getFileName(), detail.getSringTime(), detail.getModiTimeTime() };

@@ -32,7 +32,7 @@ public class DetailActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail);
-		fileName = "";
+		fileName = getIntent().getStringExtra("filename");
 		activity = this;
 		this.getOverflowMenu();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,7 +56,7 @@ public class DetailActivity extends ActionBarActivity {
 			LayoutInflater inflater = LayoutInflater.from(this);
 			final View view = inflater.inflate(R.layout.renamedialog, null);
 			textView = (TextView) view.findViewById(R.id.rename);
-			textView.setText(fileName);
+			textView.setText(fileName.substring(0, fileName.lastIndexOf(".")));
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("重命名").setView(view)
 					.setPositiveButton("确定", new OnClickListener() {
@@ -64,7 +64,7 @@ public class DetailActivity extends ActionBarActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							boolean succese = FileManagement.renameMusicFile(
-									fileName, (String) textView.getText());
+									fileName, (String) textView.getText()+".amr");
 							if (succese) {
 								Toast.makeText(activity, "文件重命名成功",
 										Toast.LENGTH_SHORT);

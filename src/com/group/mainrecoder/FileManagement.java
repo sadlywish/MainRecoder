@@ -105,7 +105,7 @@ public class FileManagement {
 	 * @return 最终存储文件名
 	 */
 	public static String saveTempFile(String fileName, int count) {
-		File newFile = new File(getPlayerDir() + fileName);
+		File newFile = new File(getPlayerDir() + fileName+suffix);
 		int i = 1;
 		//对文件进行重命名检查
 		//如果文件存在，则在文件名后追加(1)、(2)...

@@ -51,7 +51,7 @@ public class PlayerActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		soundName = "";// 这里是获取的文件名，还没完！！！
+		soundName = getIntent().getStringExtra("filename");// 这里是获取的文件名，还没完！！！
 		textView.setText(soundName);
 		PlayerFactory.selectByName(soundName);
 		setContentView(R.layout.activity_player);
