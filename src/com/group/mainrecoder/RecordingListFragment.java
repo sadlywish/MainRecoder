@@ -27,10 +27,7 @@ public class RecordingListFragment extends ListFragment {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+	private int count;
 
 	/*
 	 * @Override public void onCreate(Bundle savedInstanceState) { String[]
@@ -56,7 +53,7 @@ public class RecordingListFragment extends ListFragment {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("title", );
+		map.put("title","" );
 		map.put("info", "google 1");
 		// map.put("img", R.drawable.i1);
 		list.add(map);
@@ -131,7 +128,7 @@ public class RecordingListFragment extends ListFragment {
 //							getActivity());
 //					builder.setTitle("详细").setMessage("该去哪").create().show();
 					Intent intent = new Intent(getActivity(), DetailActivity.class);
-					intent.putExtra("filename", (String) mData.get(position).get("title"));
+					intent.putExtra("filename", (String) mData.get(count).get("title"));
 					getActivity().startActivity(intent);
 				}
 			});
@@ -143,6 +140,8 @@ public class RecordingListFragment extends ListFragment {
 //							getActivity());
 //					builder.setTitle("播放").setMessage("该是啥是啥").create().show();
 					Intent intent = new Intent(getActivity(), PlayerActivity.class);
+					intent.putExtra("filename", (String) mData.get(count).get("title"));
+					
 					getActivity().startActivity(intent);
 				}
 			});
