@@ -19,17 +19,19 @@
 	    <!-- 显示删除按钮 -->
 
 	    <LinearLayout
-	        android:layout_width="wrap_content"
-	        android:layout_height="0dp"
-	        android:layout_weight="1"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.43"
+	        android:gravity="right"
 	        android:background="#FFFFFF"
 	        android:orientation="horizontal" >
-
+ 
 	        <Button
 	            android:id="@+id/DeleteButton"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/delete" />
+ 	            
 	    </LinearLayout>
 
 	    <!-- 显示录音信息 -->
@@ -38,14 +40,15 @@
 	        android:id="@+id/SoundMessage"
 	        android:layout_width="match_parent"
 	        android:layout_height="0dp"
-	        android:layout_weight="1.26"
+	        android:layout_weight="1.56"
+	        android:gravity="center"
 	        android:text="我的第一个录音" />
 
 	    <!-- 显示进度条 -->
-	    <LinearLayout
+	    <LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="0dp"
-	        android:layout_weight="1"
+	        android:layout_weight="0.77"
 	        android:background="#FFFFFF"
 	        android:orientation="horizontal" >
 
@@ -56,10 +59,11 @@
 	    </LinearLayout>
 
 	    <!-- 显示播放器按钮 -->
+
 	    <LinearLayout
 	        android:layout_width="wrap_content"
-	        android:layout_height="0dp"
-	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.26"
 	        android:orientation="horizontal" >
 
 	        <!-- 上一曲按钮 -->
