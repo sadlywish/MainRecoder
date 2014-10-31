@@ -1276,7 +1276,9 @@ containing a value of this type.
         public static final int action_rename=0x7f0a001a;
         public static final int action_settings=0x7f0a000f;
         public static final int app_name=0x7f0a000d;
+        public static final int apply=0x7f0a001d;
         public static final int back=0x7f0a0019;
+        public static final int cancel=0x7f0a001e;
         public static final int delete=0x7f0a0018;
         public static final int detail=0x7f0a0014;
         public static final int hello_world=0x7f0a000e;

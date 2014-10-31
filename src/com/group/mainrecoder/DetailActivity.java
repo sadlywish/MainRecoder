@@ -7,9 +7,11 @@ import com.example.mainrecoder.R;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,14 +20,20 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.os.Build;
 
 public class DetailActivity extends ActionBarActivity {
+	private String fileName;
+	private TextView textView;
+	private Activity activity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail);
+		fileName = "";
+		activity = this;
 		this.getOverflowMenu();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.detail);
@@ -47,11 +55,25 @@ public class DetailActivity extends ActionBarActivity {
 		if (id == R.id.action_rename) {
 			LayoutInflater inflater = LayoutInflater.from(this);
 			final View view = inflater.inflate(R.layout.renamedialog, null);
-			TextView textView = (TextView) view.findViewById(R.id.rename);
-			textView.setText("1");
+			textView = (TextView) view.findViewById(R.id.rename);
+			textView.setText(fileName);
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("重命名").setView(view).setPositiveButton("确定", null)
-					.setNegativeButton("返回", null).create().show();
+			builder.setTitle("重命名").setView(view)
+					.setPositiveButton("确定", new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							boolean succese = FileManagement.renameMusicFile(
+									fileName, (String) textView.getText());
+							if (succese) {
+								Toast.makeText(activity, "文件重命名成功",
+										Toast.LENGTH_SHORT);
+							} else {
+								Toast.makeText(activity, "文件重名，重命名失败",
+										Toast.LENGTH_SHORT);
+							}
+						}
+					}).setNegativeButton("返回", null).create().show();
 
 			// Dialog dialog = builder.create();
 			// dialog.show();
@@ -60,8 +82,14 @@ public class DetailActivity extends ActionBarActivity {
 		if (id == R.id.action_delete) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("删除").setMessage("删除录音文件")
-					.setPositiveButton("确定", null)
-					.setNegativeButton("返回", null).create().show();
+					.setPositiveButton(R.string.apply, new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							FileManagement.deleteMusicFlie(fileName);
+
+						}
+					}).setNegativeButton("返回", null).create().show();
 			// Dialog dialog = builder.create();
 			// dialog.show();
 			return true;

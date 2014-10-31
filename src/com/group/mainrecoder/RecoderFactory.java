@@ -101,7 +101,7 @@ public class RecoderFactory {
 		count = 1;
 		return finalName;
 	}
-	public static void cancle(){
+	public static void cancel(){
 		FileManagement.clearTempDir();
 		count = 1;
 	}

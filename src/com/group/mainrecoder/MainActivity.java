@@ -136,7 +136,7 @@ public class MainActivity extends ActionBarActivity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								RecoderFactory.cancle();
+								RecoderFactory.cancel();
 
 							}
 						}).create().show();
