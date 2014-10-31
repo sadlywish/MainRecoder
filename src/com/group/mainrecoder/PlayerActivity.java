@@ -65,8 +65,13 @@ public class PlayerActivity extends ActionBarActivity {
 	}
 	
 	//脱离播放界面时释放资源
-	pr
-
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		PlayerFactory.release();
+		super.onDestroy();
+	}
+	
 	// 构建Player对象
 	private void init() {
 		mPlayer = new MediaPlayer();
