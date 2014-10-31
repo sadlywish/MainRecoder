@@ -1,9 +1,13 @@
 package com.group.mainrecoder;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import android.R.bool;
 import android.media.MediaPlayer;
+import android.net.Uri;
 
 /**
  * @author LiuYufei 本类调用时需要进行实例化 请切记在用户离开播放界面时释放资源
@@ -20,7 +24,7 @@ public class PlayerFactory {
 
 	// 播放列表
 	static private List<String> mList = new ArrayList<String>();
-	
+
 	// 当前播放歌曲的索引
 	static int mListItem = 0;
 
@@ -40,29 +44,55 @@ public class PlayerFactory {
 		PlayerFactory.isPrepare = isprepare;
 	}
 
-	
 	/**
 	 * 使用文件名定位列表
 	 * 
 	 * @param fileName
 	 */
 	public static void selectByName(String fileName) {
-		//这里没写呢！！！
+		mList = FileManagement.getMusicNameList();
+		for (int i = 0; i < mList.size(); i++) {
+			if (fileName.equals(mList.get(i))) {
+				mListItem = i;
+				break;
+			}
+		}
 	}
 	
+	public static String getFileName(){
+		return mList.get(mListItem);	
+	}
+
 	/**
 	 * 初始化播放器
 	 * 
-	 * @param path 音频文件路径
+	 * @param path
+	 *            音频文件路径
 	 */
 	private static void inti() {
 		// 重置mPlayer
 		mediaPlayer.reset();
 		// 设置播放文件的路径
-		mediaPlayer.setDataSource(path);
-		// 准备播放
-		mediaPlayer.prepare();
-		//更改播放器的状态值
+		try {
+			mediaPlayer.setDataSource(Uri.encode(FileManagement.getPlayerDir()
+					+ mList.get(mListItem)));
+			// 准备播放
+			mediaPlayer.prepare();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// 更改播放器的状态值
 		isPrepare = true;
 	}
 
@@ -74,14 +104,16 @@ public class PlayerFactory {
 	 */
 	public static void play() {
 		if (!isPrepare) {
-			//当播放器内没有加载音频时，加载新音频
+			// 当播放器内没有加载音频时，加载新音频
 			inti();
 		}
 		mediaPlayer.start();
+
 	}
 
 	public static void pause() {
 		mediaPlayer.pause();
+
 	}
 
 	// 下一首
@@ -107,8 +139,7 @@ public class PlayerFactory {
 	 */
 	public static void stop() {
 		// 判断是否在播放
-		if (mediaPlayer.isPlaying()) 
-		{
+		if (mediaPlayer.isPlaying()) {
 			mediaPlayer.reset(); // 重置mediaPlayer到初始化状态
 			isPrepare = false; // 将播放器内容设置为空
 		}
@@ -120,14 +151,36 @@ public class PlayerFactory {
 	 * @return 播放进度值（0-10000）
 	 */
 	public static int getPlayRate() {
-		return 0;
+		if (isPrepare) {
+			int r = mediaPlayer.getCurrentPosition()
+					/ mediaPlayer.getDuration() * 10000;
+			return r;
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * @param pro
+	 * @return
+	 */
+	public static boolean seekTo(int pro) {
+		if (isPrepare) {
+			int progress = mediaPlayer.getDuration() * (pro / 10000);
+			mediaPlayer.seekTo(progress);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
 	 * 彻底释放该类资源，无视所在状态
 	 */
 	public static void release() {
-
+		isPrepare = false;
+		mediaPlayer.reset();
+		mediaPlayer.release();
 	}
 
 }
