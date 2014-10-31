@@ -56,7 +56,7 @@ public class RecordingListFragment extends ListFragment {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("title", "G1");
+		map.put("title", );
 		map.put("info", "google 1");
 		// map.put("img", R.drawable.i1);
 		list.add(map);
@@ -131,6 +131,7 @@ public class RecordingListFragment extends ListFragment {
 //							getActivity());
 //					builder.setTitle("详细").setMessage("该去哪").create().show();
 					Intent intent = new Intent(getActivity(), DetailActivity.class);
+					intent.putExtra("filename", (String) mData.get(position).get("title"));
 					getActivity().startActivity(intent);
 				}
 			});
