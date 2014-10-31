@@ -57,10 +57,11 @@ public class PlayerFactory {
 				break;
 			}
 		}
+		inti();
 	}
-	
-	public static String getFileName(){
-		return mList.get(mListItem);	
+
+	public static String getFileName() {
+		return mList.get(mListItem);
 	}
 
 	/**
@@ -74,8 +75,8 @@ public class PlayerFactory {
 		mediaPlayer.reset();
 		// 设置播放文件的路径
 		try {
-			mediaPlayer.setDataSource(Uri.encode(FileManagement.getPlayerDir()
-					+ mList.get(mListItem)));
+			mediaPlayer.setDataSource(FileManagement.getPlayerDir()
+					+ mList.get(mListItem));
 			// 准备播放
 			mediaPlayer.prepare();
 		} catch (IllegalArgumentException e) {
@@ -122,6 +123,7 @@ public class PlayerFactory {
 		if (++mListItem >= mList.size()) {
 			mListItem = 0;
 		}
+		inti();
 		play();
 	}
 
@@ -129,8 +131,9 @@ public class PlayerFactory {
 	public static void LastMusic() {
 		stop();
 		if (--mListItem < 0) {
-			mListItem = 0;
+			mListItem = mList.size()-1;
 		}
+		inti();
 		play();
 	}
 
@@ -152,8 +155,8 @@ public class PlayerFactory {
 	 */
 	public static int getPlayRate() {
 		if (isPrepare) {
-			int r = mediaPlayer.getCurrentPosition()
-					/ mediaPlayer.getDuration() * 10000;
+			int r = (int)((double)mediaPlayer.getCurrentPosition()
+					/ (double)mediaPlayer.getDuration() *10000f);
 			return r;
 		} else {
 			return 0;
@@ -166,7 +169,7 @@ public class PlayerFactory {
 	 */
 	public static boolean seekTo(int pro) {
 		if (isPrepare) {
-			int progress = mediaPlayer.getDuration() * (pro / 10000);
+			int progress = (int) ((double)mediaPlayer.getDuration() * ((double)pro / 10000f));
 			mediaPlayer.seekTo(progress);
 			return true;
 		} else {
@@ -180,7 +183,6 @@ public class PlayerFactory {
 	public static void release() {
 		isPrepare = false;
 		mediaPlayer.reset();
-		mediaPlayer.release();
 	}
 
 }

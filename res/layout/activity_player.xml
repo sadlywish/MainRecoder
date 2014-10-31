@@ -42,7 +42,7 @@
 	        android:layout_height="0dp"
 	        android:layout_weight="1.56"
 	        android:gravity="center"
-	        android:text="我的第一个录音" />
+	        android:text="" />
 
 	    <!-- 显示进度条 -->
 	    <LinearLayout

@@ -28,12 +28,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	final Activity activity = this;
-	TextView textView;
+	EditText textView;
 	Button start;
 	Button stop;
 	Button pause;
@@ -116,7 +117,7 @@ public class MainActivity extends ActionBarActivity {
 				RecoderFactory.stop();
 				LayoutInflater inflater = LayoutInflater.from(activity);
 				final View view = inflater.inflate(R.layout.renamedialog, null);
-				textView = (TextView) view.findViewById(R.id.rename);
+				textView = (EditText) view.findViewById(R.id.rename);
 				SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 				textView.setText(df.format(new Date()));
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -127,7 +128,7 @@ public class MainActivity extends ActionBarActivity {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								String name = RecoderFactory
-										.save((String) textView.getText());
+										.save(textView.getText().toString(), activity);
 								Toast.makeText(activity, name,
 										Toast.LENGTH_SHORT);
 							}

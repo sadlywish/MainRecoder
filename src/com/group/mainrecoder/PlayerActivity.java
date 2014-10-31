@@ -35,9 +35,9 @@ public class PlayerActivity extends ActionBarActivity {
 	private Button SPButton = null;
 	private Button StopButton = null;
 	private Button NextButton = null;
-	
-	//定义文本框
-	private TextView textView ;
+
+	// 定义文本框
+	private TextView textView;
 
 	// 定义进度条
 	private SeekBar seekBar;
@@ -51,31 +51,24 @@ public class PlayerActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_player);
 		soundName = getIntent().getStringExtra("filename");// 这里是获取的文件名，还没完！！！
+		textView = (TextView) this.findViewById(R.id.SoundMessage);
 		textView.setText(soundName);
 		PlayerFactory.selectByName(soundName);
-		setContentView(R.layout.activity_player);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle("录音播放");
-
-		init();
 		findView();
 		setListener();
-		
+
 	}
-	
-	//脱离播放界面时释放资源
+
+	// 脱离播放界面时释放资源
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		PlayerFactory.release();
 		super.onDestroy();
-	}
-	
-	// 构建Player对象
-	private void init() {
-		mPlayer = new MediaPlayer();
-
 	}
 
 	// 构建Button对象
@@ -99,6 +92,7 @@ public class PlayerActivity extends ActionBarActivity {
 		public void run() {
 			// 获得现在歌曲播放的位置并设置为进度条的值
 			seekBar.setProgress(PlayerFactory.getPlayRate());
+			// System.out.println(PlayerFactory.getPlayRate());
 			// 每次延迟100毫秒启动线程
 			handler.postDelayed(updateThread, 100);
 		}
@@ -109,7 +103,7 @@ public class PlayerActivity extends ActionBarActivity {
 		DeleteButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View arg0) {
 				FileManagement.deleteMusicFlie(PlayerFactory.getFileName());
-				PlayerFactory.nextMusic();//删除后自动播放下一曲
+				PlayerFactory.nextMusic();// 删除后自动播放下一曲
 				textView.setText(PlayerFactory.getFileName());
 			}
 		});
@@ -118,6 +112,7 @@ public class PlayerActivity extends ActionBarActivity {
 		StopButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				PlayerFactory.stop();
+				SPButton.setText("播放");
 				handler.removeCallbacks(updateThread);
 			}
 		});
@@ -126,13 +121,14 @@ public class PlayerActivity extends ActionBarActivity {
 		SPButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
 				if (!PlayerFactory.getMediaPlayer().isPlaying()) {
-					SPButton.setText("暂停");					
+					SPButton.setText("暂停");
 					PlayerFactory.play();
+					handler.post(updateThread);
 				} else {
 					SPButton.setText("播放");
 					PlayerFactory.pause();
 				}
-				handler.post(updateThread);
+
 			}
 		});
 
@@ -160,7 +156,8 @@ public class PlayerActivity extends ActionBarActivity {
 			}
 
 			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
 				if (fromUser == true) {
 					// 如果是用户拖动进度条改变滑块值
 					PlayerFactory.seekTo(progress);

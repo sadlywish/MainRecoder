@@ -34,7 +34,7 @@
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:text=".mp3" />
+            android:text=".amr" />
     </LinearLayout>
 
 </LinearLayout>

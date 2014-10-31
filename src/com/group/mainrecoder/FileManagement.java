@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.net.rtp.RtpStream;
 import android.os.Environment;
 
@@ -30,7 +31,9 @@ public class FileManagement {
 	 * @return 完整播放器路径，不包括文件名
 	 */
 	public static String getPlayerDir() {
-		return Environment.DIRECTORY_MUSIC + playerDir;
+		return Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_MUSIC).getPath()
+				+ playerDir;
 	}
 
 	/**
@@ -39,15 +42,18 @@ public class FileManagement {
 	 * @return 完整单缓存文件路径，包括带序号的文件名
 	 */
 	public static String getTempsfile(int count) {
-		return Environment.DIRECTORY_MUSIC + tempDir + tempname + count
-				+ suffix;
+		return Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_MUSIC).getPath()
+				+ tempDir + tempname + count + suffix;
 	}
 
 	/**
 	 * @return 完整缓存文件路径，不包括文件名
 	 */
 	public static String getTempDir() {
-		return Environment.DIRECTORY_MUSIC + tempDir;
+		return Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_MUSIC).getPath()
+				+ tempDir;
 	}
 
 	/**
@@ -104,14 +110,15 @@ public class FileManagement {
 	 * @param count
 	 * @return 最终存储文件名
 	 */
-	public static String saveTempFile(String fileName, int count) {
-		File newFile = new File(getPlayerDir() + fileName+suffix);
+	public static String saveTempFile(String fileName, int count, Activity activity) {
+		File newFile = new File(getPlayerDir() + fileName + suffix);
 		int i = 1;
-		//对文件进行重命名检查
-		//如果文件存在，则在文件名后追加(1)、(2)...
+		// 对文件进行重命名检查
+		// 如果文件存在，则在文件名后追加(1)、(2)...
 		for (i = 1; i >= 1; i++) {
 			if (newFile.exists()) {
-				newFile = new File(getPlayerDir() + fileName + "(" + i + ")");
+				newFile = new File(getPlayerDir() + fileName + "(" + i + ")"
+						+ suffix);
 			} else {
 				break;
 			}
@@ -124,47 +131,11 @@ public class FileManagement {
 			for (int a = 1; a <= count; a++) {
 				list.add(getTempsfile(a));
 			}
-			for (int a = 0; a < list.size(); a++) {
-				File file = new File((String) list.get(a));
-				try {
-					FileOutputStream fileOutputStream = null;
-					FileInputStream fileInputStream = new FileInputStream(file);
-					try {
-						fileOutputStream = new FileOutputStream(new File(
-								getPlayerDir() + fileName));
-
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					byte[] myByte = new byte[fileInputStream.available()];
-					// 文件长度
-					int length = myByte.length;
-
-					// 头文件
-					if (i == 0) {
-						while (fileInputStream.read(myByte) != -1) {
-							fileOutputStream.write(myByte, 0, length);
-						}
-					}
-
-					// 之后的文件，去掉头文件就可以了
-					else {
-						while (fileInputStream.read(myByte) != -1) {
-
-							fileOutputStream.write(myByte, 6, length - 6);
-						}
-					}
-
-					fileOutputStream.flush();
-					fileInputStream.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			getInputCollection(list, newFile,activity);
+			
 		}
 		if (i > 1) {
-			fileName = fileName + "(" + (i - 1) + ")";
+			fileName = fileName + "(" + (i - 1) + ")" + suffix;
 		}
 		return fileName;
 	}
@@ -240,4 +211,69 @@ public class FileManagement {
 		}
 		return flag;
 	}
+
+	public static void getInputCollection(List list, File filename, Activity activity) { 
+		// 创建音频文件,合并的文件放这里
+		File file1 = filename;
+		FileOutputStream fileOutputStream = null;
+
+		if (!file1.exists()) {
+			try {
+				file1.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			fileOutputStream = new FileOutputStream(file1,true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// list里面为暂停录音 所产生的 几段录音文件的名字，中间几段文件的减去前面的6个字节头文件
+
+		for (int i = 0; i < list.size(); i++) {
+			File file = new File((String) list.get(i));
+			try {
+				FileInputStream fileInputStream = new FileInputStream(file);
+				byte[] myByte = new byte[fileInputStream.available()];
+				// 文件长度
+				int length = myByte.length;
+
+				// 头文件
+				if (i == 0) {
+					while (fileInputStream.read(myByte) != -1) {
+						fileOutputStream.write(myByte, 0, length);
+					}
+				}
+
+				// 之后的文件，去掉头文件就可以了
+				else {
+					while (fileInputStream.read(myByte) != -1) {
+
+						fileOutputStream.write(myByte, 6, length - 6);
+					}
+				}
+
+				fileOutputStream.flush();
+				fileInputStream.close();
+				System.out.println("合成文件长度：" + file1.length());
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		// 结束后关闭流
+		try {
+			fileOutputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }

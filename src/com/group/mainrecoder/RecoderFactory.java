@@ -2,6 +2,7 @@ package com.group.mainrecoder;
 
 import java.io.File;
 
+import android.app.Activity;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -56,9 +57,9 @@ public class RecoderFactory {
 			// 设置音频录入源
 			mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 			// 设置录制音频的输出格式
-			mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+			mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
 			// 设置音频的编码格式
-			mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+			mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 			// 创建一个临时的音频输出文件
 			// File audioFile = File.createTempFile("record_", ".amr");
 
@@ -95,8 +96,8 @@ public class RecoderFactory {
 		count++;
 	}
 	
-	public static String save (String fileName){
-		String finalName = FileManagement.saveTempFile(fileName, count);
+	public static String save (String fileName , Activity activity){
+		String finalName = FileManagement.saveTempFile(fileName, count, activity);
 		FileManagement.clearTempDir();
 		count = 1;
 		return finalName;

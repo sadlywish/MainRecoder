@@ -27,7 +27,6 @@ public class RecordingListFragment extends ListFragment {
 	/**
 	 * @param args
 	 */
-	private int count;
 
 	/*
 	 * @Override public void onCreate(Bundle savedInstanceState) { String[]
@@ -57,7 +56,7 @@ public class RecordingListFragment extends ListFragment {
 
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("title", details.get(i).getFileName());
-			map.put("info","时间长度:"+ details.get(i).getTime());
+			map.put("info","时间长度:"+ details.get(i).getSringTime());
 			// map.put("img", R.drawable.i1);
 			list.add(map);
 		}
@@ -100,7 +99,7 @@ public class RecordingListFragment extends ListFragment {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-
+			final int count = position;
 			ViewHolder holder = null;
 			if (convertView == null) {
 
@@ -131,6 +130,7 @@ public class RecordingListFragment extends ListFragment {
 					// AlertDialog.Builder builder = new AlertDialog.Builder(
 					// getActivity());
 					// builder.setTitle("详细").setMessage("该去哪").create().show();
+					System.out.println(count+"");
 					Intent intent = new Intent(getActivity(),
 							DetailActivity.class);
 					intent.putExtra("filename",
@@ -149,7 +149,7 @@ public class RecordingListFragment extends ListFragment {
 							PlayerActivity.class);
 					intent.putExtra("filename",
 							(String) mData.get(count).get("title"));
-
+					
 					getActivity().startActivity(intent);
 				}
 			});

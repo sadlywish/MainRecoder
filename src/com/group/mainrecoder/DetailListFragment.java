@@ -30,9 +30,9 @@ public class DetailListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		String fileName = getActivity().getIntent().getStringExtra("filename");
-		String[] titles = {"文件名:", "时长:", "最后修改时间:" };
+		String[] titles = {"文件名:", "时长:", "最后修改时间:","文件体积" };
 		FileDetail detail = new FileDetail(fileName);
-		String[] details = {detail.getFileName(), detail.getSringTime(), detail.getModiTimeTime() };
+		String[] details = {detail.getFileName(), detail.getSringTime(), detail.getModiTimeTime(),detail.getSize() };
 		List<Map<String, String>> textList = new ArrayList<Map<String,String>>();
 		for (int i = 0; i < details.length; i++) {
 			Map<String, String> allText = new HashMap<String, String>();

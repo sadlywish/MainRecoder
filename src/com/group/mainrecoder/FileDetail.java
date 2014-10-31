@@ -2,6 +2,7 @@ package com.group.mainrecoder;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,28 +23,16 @@ public class FileDetail {
 	 * @param filename
 	 */
 	public FileDetail(String filename) {
-		File file = new File(Uri.encode(FileManagement.getPlayerDir()+filename));
+		File file = new File(FileManagement.getPlayerDir()+filename);
 		this.fileName = filename;
 		this.modiTime = file.lastModified();
 		this.size = file.length();
-		MediaPlayer mediaPlayer = new MediaPlayer();
 		try {
-			mediaPlayer.setDataSource(file.getAbsolutePath());
-			mediaPlayer.prepare();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.time = this.getAmrDuration(file)+57600000;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.time = mediaPlayer.getDuration();
 	}
 
 	public String getFileName() {
@@ -75,7 +64,7 @@ public class FileDetail {
 	 */
 	public String getModiTimeTime() {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd-HH:mm");
-		return df.format(new Date(time));
+		return df.format(new Date(modiTime));
 	}
 
 	public void setModiTime(long modiTime) {
@@ -99,5 +88,35 @@ public class FileDetail {
 	public void setSize(long size) {
 		this.size = size;
 	}
-
+	public  long getAmrDuration(File file) throws IOException {  
+        long duration = -1;  
+        int[] packedSize = { 12, 13, 15, 17, 19, 20, 26, 31, 5, 0, 0, 0, 0, 0, 0, 0 };  
+        RandomAccessFile randomAccessFile = null;  
+        try {  
+            randomAccessFile = new RandomAccessFile(file, "rw");  
+            long length = file.length();//文件的长度  
+            int pos = 6;//设置初始位置  
+            int frameCount = 0;//初始帧数  
+            int packedPos = -1;  
+            /////////////////////////////////////////////////////  
+            byte[] datas = new byte[1];//初始数据值  
+            while (pos <= length) {  
+                randomAccessFile.seek(pos);  
+                if (randomAccessFile.read(datas, 0, 1) != 1) {  
+                    duration = length > 0 ? ((length - 6) / 650) : 0;  
+                    break;  
+                }  
+                packedPos = (datas[0] >> 3) & 0x0F;  
+                pos += packedSize[packedPos] + 1;  
+                frameCount++;  
+            }  
+            /////////////////////////////////////////////////////  
+            duration += frameCount * 20;//帧数*20  
+        } finally {  
+            if (randomAccessFile != null) {  
+                randomAccessFile.close();  
+            }  
+        }  
+        return duration;  
+    }
 }
