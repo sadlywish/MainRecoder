@@ -52,12 +52,15 @@ public class RecordingListFragment extends ListFragment {
 	private List<Map<String, Object>> getData() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("title","" );
-		map.put("info", "google 1");
-		// map.put("img", R.drawable.i1);
-		list.add(map);
+		List<FileDetail> details = FileManagement.getMusicFileList();
+		for (int i = 0; i < details.size(); i++) {
 
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("title", details.get(i).getFileName());
+			map.put("info", details.get(i).getTime());
+			// map.put("img", R.drawable.i1);
+			list.add(map);
+		}
 		return list;
 	}
 
@@ -108,7 +111,8 @@ public class RecordingListFragment extends ListFragment {
 				holder.info = (TextView) convertView.findViewById(R.id.info);
 				holder.viewBtn = (Button) convertView
 						.findViewById(R.id.view_btn);
-				holder.playBtn = (Button) convertView.findViewById(R.id.play_btn);
+				holder.playBtn = (Button) convertView
+						.findViewById(R.id.play_btn);
 				convertView.setTag(holder);
 
 			} else {
@@ -124,11 +128,13 @@ public class RecordingListFragment extends ListFragment {
 
 				@Override
 				public void onClick(View v) {
-//					AlertDialog.Builder builder = new AlertDialog.Builder(
-//							getActivity());
-//					builder.setTitle("详细").setMessage("该去哪").create().show();
-					Intent intent = new Intent(getActivity(), DetailActivity.class);
-					intent.putExtra("filename", (String) mData.get(count).get("title"));
+					// AlertDialog.Builder builder = new AlertDialog.Builder(
+					// getActivity());
+					// builder.setTitle("详细").setMessage("该去哪").create().show();
+					Intent intent = new Intent(getActivity(),
+							DetailActivity.class);
+					intent.putExtra("filename",
+							(String) mData.get(count).get("title"));
 					getActivity().startActivity(intent);
 				}
 			});
@@ -136,12 +142,14 @@ public class RecordingListFragment extends ListFragment {
 
 				@Override
 				public void onClick(View v) {
-//					AlertDialog.Builder builder = new AlertDialog.Builder(
-//							getActivity());
-//					builder.setTitle("播放").setMessage("该是啥是啥").create().show();
-					Intent intent = new Intent(getActivity(), PlayerActivity.class);
-					intent.putExtra("filename", (String) mData.get(count).get("title"));
-					
+					// AlertDialog.Builder builder = new AlertDialog.Builder(
+					// getActivity());
+					// builder.setTitle("播放").setMessage("该是啥是啥").create().show();
+					Intent intent = new Intent(getActivity(),
+							PlayerActivity.class);
+					intent.putExtra("filename",
+							(String) mData.get(count).get("title"));
+
 					getActivity().startActivity(intent);
 				}
 			});
