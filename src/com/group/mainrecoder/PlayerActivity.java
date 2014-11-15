@@ -7,6 +7,9 @@ import java.util.List;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -99,12 +102,36 @@ public class PlayerActivity extends ActionBarActivity {
 	};
 
 	private void setListener() {
-		// DeleteButton按钮(未完成……)
+		// DeleteButton按钮
 		DeleteButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View arg0) {
-				FileManagement.deleteMusicFlie(PlayerFactory.getFileName());
-				PlayerFactory.nextMusic();// 删除后自动播放下一曲
-				textView.setText(PlayerFactory.getFileName());
+				AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+				dialog.setTitle("确认删除")
+						.setMessage("确定要删除吗？")
+						.setPositiveButton("刪除", new OnClickListener(){
+
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								FileManagement.deleteMusicFlie(PlayerFactory.getFileName());
+								PlayerFactory.nextMusic();// 删除后自动播放下一曲
+								textView.setText(PlayerFactory.getFileName());								
+							}							
+						})
+						.setNegativeButton("取消", null)
+						.create()
+						.show();
+				
+//				new AlertDialog.Builder()   
+//				.setTitle("确认")  
+//				.setMessage("确定吗？")  
+//				.setPositiveButton("是", null)  
+//				.setNegativeButton("否", null)  
+//				.show(); 
+
+				
+//				FileManagement.deleteMusicFlie(PlayerFactory.getFileName());
+//				PlayerFactory.nextMusic();// 删除后自动播放下一曲
+//				textView.setText(PlayerFactory.getFileName());
 			}
 		});
 
