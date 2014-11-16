@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -26,11 +27,15 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.example.mainrecoder.R;
+import com.group.mainrecoder.RecordingListFragment.MyAdapter;
 
 public class PlayerActivity extends ActionBarActivity {
 	final Activity activity = this;
 	// 定义播放器状态（真为有文件在播放）
 	private boolean isIsprepare = false;
+	
+	// 播放列表
+		static private List<String> mList = new ArrayList<String>();
 
 	// 定义按钮
 	private Button DeleteButton = null;
@@ -109,12 +114,21 @@ public class PlayerActivity extends ActionBarActivity {
 				dialog.setTitle("确认删除")
 						.setMessage("确定要删除吗？")
 						.setPositiveButton("刪除", new OnClickListener(){
-
 							@Override
 							public void onClick(DialogInterface arg0, int arg1) {
 								FileManagement.deleteMusicFlie(PlayerFactory.getFileName());
-								PlayerFactory.nextMusic();// 删除后自动播放下一曲
-								textView.setText(PlayerFactory.getFileName());								
+								//删除后检查是否有录音，没有就返回录音界面，有就播放下一曲
+								mList = FileManagement.getMusicNameList();
+								if(mList.size()==0){
+									//返回录音界面
+									Intent intent = new Intent(activity,MainActivity.class);
+									activity.startActivity(intent);
+								}
+								else{
+									// 删除后自动播放下一曲
+									PlayerFactory.nextMusic();
+									textView.setText(PlayerFactory.getFileName());	
+								}							
 							}							
 						})
 						.setNegativeButton("取消", null)
