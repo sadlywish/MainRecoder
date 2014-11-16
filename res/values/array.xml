@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="recoderType">
+        <item>amr</item>
+        <item >3gpp(暂不支持暂停播放)</item>
+    </string-array>
+     <string-array name="recoderEntity">
+        <item>amr</item>
+        <item >3gpp</item>
+    </string-array>   
+</resources>

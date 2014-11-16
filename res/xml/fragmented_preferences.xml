@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- This is a primitive example showing the different types of preferences available. -->
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory
+            android:title="同步选项">
+
+        <CheckBoxPreference
+                android:key="autoUpload"
+                android:title="自动同步"
+                android:summary="当手机处于WIFI环境下时自动同步" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="录音格式">
+
+        <ListPreference
+                android:key="recoderType"
+                android:title="录音格式"
+                android:summary="录音格式"
+                android:entries="@array/recoderEntity"
+                android:entryValues="@array/recoderType"
+                android:dialogTitle="录音格式" />
+
+    </PreferenceCategory>
+
+ 
+
+</PreferenceScreen>
+
