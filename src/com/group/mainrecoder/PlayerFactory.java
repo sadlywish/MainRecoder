@@ -8,6 +8,7 @@ import java.util.List;
 import android.R.bool;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.widget.TextView;
 
 /**
  * @author LiuYufei 本类调用时需要进行实例化 请切记在用户离开播放界面时释放资源
@@ -21,12 +22,16 @@ public class PlayerFactory {
 	 * 判断播放器是否已装载音频文件 用于防止部分异常和错误的产生
 	 */
 	static private boolean isPrepare = false;
-
+	
 	// 播放列表
 	static private List<String> mList = new ArrayList<String>();
 
 	// 当前播放歌曲的索引
 	static int mListItem = 0;
+	
+	//当前播放时间和录音总时长
+	static String now;
+	static String total;
 
 	public static MediaPlayer getMediaPlayer() {
 		return mediaPlayer;
@@ -164,6 +169,7 @@ public class PlayerFactory {
 	}
 
 	/**
+	 * 设置进度条的滑块位置
 	 * @param pro
 	 * @return
 	 */
@@ -176,7 +182,49 @@ public class PlayerFactory {
 			return false;
 		}
 	}
-
+//=========在NowTime的textview里显示当前播放时间，在TotalTime的textview里显示录音总时间
+	public static String getNowTime(){
+		String str1,str2;
+		int Curren_minute = mediaPlayer.getCurrentPosition()/1000/60;
+		int Curren_sec = mediaPlayer.getCurrentPosition()/1000%60;
+		//设置 “ 分  ”
+		if(Curren_minute/10 == 0)
+		{
+			str1="0"+Curren_minute;
+		}else {
+			str1=Curren_minute+"";
+		}
+		//设置 “ 秒  ”
+		if(Curren_sec/10 == 0)
+		{
+			str2="0"+Curren_sec;
+		}else {
+			str2=Curren_sec+"";
+		}
+		
+		return now = str1+":"+str2;
+	}
+		
+	public static String getTotalTime(){	
+		//得到歌曲总时长
+		String str3,str4;
+		int Total_minute = mediaPlayer.getDuration()/1000/60;
+		int Total_sec = mediaPlayer.getDuration()/1000%60;
+		
+		if(Total_minute/10 == 0){
+			str3="0"+Total_minute;
+		}else {
+			str3=Total_minute+"";
+		}
+		if(Total_sec/10 == 0){
+			str4="0"+Total_sec;
+		}else {
+			str4=Total_sec+"";
+		}
+		
+		return total = str3+":"+str4;
+	}
+	
 	/**
 	 * 彻底释放该类资源，无视所在状态
 	 */

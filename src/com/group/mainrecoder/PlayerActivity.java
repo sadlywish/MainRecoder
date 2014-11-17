@@ -46,6 +46,8 @@ public class PlayerActivity extends ActionBarActivity {
 
 	// 定义文本框
 	private TextView textView;
+	private TextView nowTime;
+	private TextView totalTime;
 
 	// 定义进度条
 	private SeekBar seekBar;
@@ -60,9 +62,13 @@ public class PlayerActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_player);
-		soundName = getIntent().getStringExtra("filename");// 这里是获取的文件名，还没完！！！
+		soundName = getIntent().getStringExtra("filename");// 这里是获取的文件名
 		textView = (TextView) this.findViewById(R.id.SoundMessage);
+		nowTime = (TextView) this.findViewById(R.id.NowTime);
+		totalTime = (TextView) this.findViewById(R.id.TotalTime);
 		textView.setText(soundName);
+		nowTime.setText("00:00");
+		totalTime.setText("00:00");
 		PlayerFactory.selectByName(soundName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle("录音播放");
@@ -79,16 +85,19 @@ public class PlayerActivity extends ActionBarActivity {
 		super.onDestroy();
 	}
 
-	// 构建Button对象
+	// 构建Button、seekBar实例对象
 	private void findView() {
 		DeleteButton = (Button) this.findViewById(R.id.DeleteButton);
 		LastButton = (Button) this.findViewById(R.id.LastButton);
 		SPButton = (Button) this.findViewById(R.id.SPButton);
 		StopButton = (Button) this.findViewById(R.id.StopButton);
 		NextButton = (Button) this.findViewById(R.id.NextButton);
+		
+		
 
 		seekBar = (SeekBar) this.findViewById(R.id.SeekBar);
 		// System.out.println("1");//断点测试
+		
 		// 获得录音长度，并设置为进度条的最大值
 		seekBar.setMax(10000);
 		// System.out.println("2");//断点测试
@@ -98,6 +107,11 @@ public class PlayerActivity extends ActionBarActivity {
 
 	Runnable updateThread = new Runnable() {
 		public void run() {
+			//显示当前播放时间
+			nowTime.setText(PlayerFactory.getNowTime());
+			//显示录音总时长
+			totalTime.setText(PlayerFactory.getTotalTime());
+			
 			// 获得现在歌曲播放的位置并设置为进度条的值
 			seekBar.setProgress(PlayerFactory.getPlayRate());
 			// System.out.println(PlayerFactory.getPlayRate());
@@ -134,18 +148,6 @@ public class PlayerActivity extends ActionBarActivity {
 						.setNegativeButton("取消", null)
 						.create()
 						.show();
-				
-//				new AlertDialog.Builder()   
-//				.setTitle("确认")  
-//				.setMessage("确定吗？")  
-//				.setPositiveButton("是", null)  
-//				.setNegativeButton("否", null)  
-//				.show(); 
-
-				
-//				FileManagement.deleteMusicFlie(PlayerFactory.getFileName());
-//				PlayerFactory.nextMusic();// 删除后自动播放下一曲
-//				textView.setText(PlayerFactory.getFileName());
 			}
 		});
 
@@ -154,6 +156,9 @@ public class PlayerActivity extends ActionBarActivity {
 			public void onClick(View v) {
 				PlayerFactory.stop();
 				SPButton.setText("播放");
+				seekBar.setProgress(0);
+				nowTime.setText("00:00");
+				totalTime.setText("00:00");
 				handler.removeCallbacks(updateThread);
 			}
 		});
@@ -185,14 +190,20 @@ public class PlayerActivity extends ActionBarActivity {
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
+			//当用户结束拖动滑块时，调用该方法
 			public void onStopTrackingTouch(SeekBar arg0) {
 				// TODO Auto-generated method stub
-
+				PlayerFactory.play();
 			}
 
 			@Override
-			public void onStartTrackingTouch(SeekBar arg0) {
+			//当用户开始滑动滑块时,调用该方法
+			public void onStartTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
+				//判断是否在播放以防报错
+				if(PlayerFactory.getMediaPlayer().isPlaying()){
+					PlayerFactory.pause();
+				}
 
 			}
 
@@ -202,9 +213,6 @@ public class PlayerActivity extends ActionBarActivity {
 				if (fromUser == true) {
 					// 如果是用户拖动进度条改变滑块值
 					PlayerFactory.seekTo(progress);
-					// if (!PlayerFactory.seekTo(progress)) {
-					// seekBar.setProgress(0);//當沒有準備好的時候進度條归零
-					// }
 				}
 			}
 		});
