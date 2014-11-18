@@ -74,7 +74,6 @@ public class PlayerActivity extends ActionBarActivity {
 		getSupportActionBar().setTitle("录音播放");
 		findView();
 		setListener();
-
 	}
 
 	// 脱离播放界面时释放资源
@@ -137,11 +136,14 @@ public class PlayerActivity extends ActionBarActivity {
 									//返回录音界面
 									Intent intent = new Intent(activity,MainActivity.class);
 									activity.startActivity(intent);
+									onDestroy();
 								}
 								else{
 									// 删除后自动播放下一曲
 									PlayerFactory.nextMusic();
-									textView.setText(PlayerFactory.getFileName());	
+									textView.setText(PlayerFactory.getFileName());
+									handler.post(updateThread);
+									SPButton.setText("暂停");
 								}							
 							}							
 						})
@@ -183,6 +185,8 @@ public class PlayerActivity extends ActionBarActivity {
 			public void onClick(View arg0) {
 				PlayerFactory.nextMusic();
 				textView.setText(PlayerFactory.getFileName());
+				SPButton.setText("暂停");
+				handler.post(updateThread);
 			}
 		});
 
@@ -193,6 +197,7 @@ public class PlayerActivity extends ActionBarActivity {
 			//当用户结束拖动滑块时，调用该方法
 			public void onStopTrackingTouch(SeekBar arg0) {
 				// TODO Auto-generated method stub
+				SPButton.setText("暂停");
 				PlayerFactory.play();
 			}
 
@@ -222,6 +227,8 @@ public class PlayerActivity extends ActionBarActivity {
 			public void onClick(View arg0) {
 				PlayerFactory.LastMusic();
 				textView.setText(PlayerFactory.getFileName());
+				handler.post(updateThread);
+				SPButton.setText("暂停");
 			}
 		});
 	}
