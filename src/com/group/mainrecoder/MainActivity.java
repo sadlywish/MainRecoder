@@ -16,6 +16,9 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		if (pref.getString("recoderType", null)==null) {
+			pref.edit().putString("recoderType", "amr");
+		}
 		RecoderFactory.setPref(pref);
 		FileManagement.setPref(pref);
 		FileManagement.setSuffixs(getResources().getStringArray(R.array.recoderEntity));
