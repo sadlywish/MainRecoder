@@ -213,7 +213,9 @@ public class RecoderActivity extends ActionBarActivity implements testInterface 
 	@Override
 	public void test() {
 		System.out.println("test");
-		
+		TextView textView = (TextView) activity
+				.findViewById(R.id.stauts);
+		textView.setText("从接口过来的操作");
 	}
 
 }
