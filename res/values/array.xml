@@ -6,6 +6,6 @@
     </string-array>
      <string-array name="recoderEntity">
         <item>amr</item>
-        <item >3gpp</item>
+        <item >3gp</item>
     </string-array>   
 </resources>
