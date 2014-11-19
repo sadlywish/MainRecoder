@@ -73,7 +73,7 @@ public class PlayerActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle("录音播放");
 		findView();
-		setListener();
+		setListener();	
 	}
 
 	// 脱离播放界面时释放资源
