@@ -129,11 +129,27 @@ public class PlayerActivity extends ActionBarActivity {
 						.setPositiveButton("刪除", new OnClickListener(){
 							@Override
 							public void onClick(DialogInterface arg0, int arg1) {
+								
 								FileManagement.deleteMusicFlie(PlayerFactory.getFileName());
 								//删除后检查是否有录音，没有就返回录音界面，有就播放下一曲
-								mList = FileManagement.getMusicNameList();
-								if(mList.size()==0){
-									//返回录音界面
+								PlayerFactory.setmList(FileManagement.getMusicNameList());
+
+								//判断指针位置，放置数值溢出
+								if(PlayerFactory.getmListItem()-1 >= PlayerFactory.getmList().size())
+								{
+									PlayerFactory.setmListItem(0);
+									PlayerFactory.play();
+									textView.setText(PlayerFactory.getFileName());
+									handler.post(updateThread);
+									SPButton.setText("暂停");
+								}
+								else if( PlayerFactory.getmList().size()==0)
+								{
+									/**
+									 * 
+									 * 删除后如果列表为空，跳转到录音界面
+									 *
+									 */
 									Intent intent = new Intent(activity,MainActivity.class);
 									activity.startActivity(intent);
 									onDestroy();

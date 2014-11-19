@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.R.bool;
+import android.app.AlertDialog;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.widget.TextView;
@@ -32,6 +33,24 @@ public class PlayerFactory {
 	//当前播放时间和录音总时长
 	static String now;
 	static String total;
+
+	
+	
+	public static int getmListItem() {
+		return mListItem;
+	}
+
+	public static void setmListItem(int mListItem) {
+		PlayerFactory.mListItem = mListItem;
+	}
+
+	public static List<String> getmList() {
+		return mList;
+	}
+
+	public static void setmList(List<String> mList) {
+		PlayerFactory.mList = mList;
+	}
 
 	public static MediaPlayer getMediaPlayer() {
 		return mediaPlayer;
@@ -126,6 +145,13 @@ public class PlayerFactory {
 	public static void nextMusic() {
 		stop();
 		if (++mListItem >= mList.size()) {
+//			//下一曲到底时对话框提醒+&&+播放列表的最后一曲
+//			new AlertDialog.Builder(activity)
+//							.setTitle("提示")
+//							.setMessage("已经是最后一个录音啦！")
+//							.setPositiveButton("确定", null)
+//							.create()
+//							.show();
 			mListItem = 0;
 		}
 		inti();
@@ -136,6 +162,14 @@ public class PlayerFactory {
 	public static void LastMusic() {
 		stop();
 		if (--mListItem < 0) {
+//			//上一曲到顶时对话框提醒+&&+播放列表的第一曲
+//			new AlertDialog.Builder(activity)
+//			.setTitle("提示")
+//			.setMessage("已经是第一个录音啦！")
+//			.setPositiveButton("确定", null)
+//			.create()
+//			.show();
+			
 			mListItem = mList.size()-1;
 		}
 		inti();
