@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.datatype.Duration;
+
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,6 +27,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mainrecoder.R;
 import com.group.mainrecoder.RecordingListFragment.MyAdapter;
@@ -199,6 +202,11 @@ public class PlayerActivity extends ActionBarActivity {
 		// Next按钮--下一曲操作
 		NextButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View arg0) {
+				if(PlayerFactory.getmListItem()+1 >= PlayerFactory.getmList().size())
+				{
+					Toast.makeText(activity, "现在已经是最后一条录音了！",Toast.LENGTH_SHORT).show();
+					System.out.println("现在是最后一条");
+				}
 				PlayerFactory.nextMusic();
 				textView.setText(PlayerFactory.getFileName());
 				SPButton.setText("暂停");
@@ -206,6 +214,20 @@ public class PlayerActivity extends ActionBarActivity {
 			}
 		});
 
+		// Last按钮--上一曲操作
+				LastButton.setOnClickListener(new Button.OnClickListener() {
+					public void onClick(View arg0) {
+						if(PlayerFactory.getmListItem()==0)
+						{
+							Toast.makeText(activity, "现在已经是第一条录音了！", Toast.LENGTH_SHORT).show();
+						}
+						PlayerFactory.LastMusic();
+						textView.setText(PlayerFactory.getFileName());
+						handler.post(updateThread);
+						SPButton.setText("暂停");
+					}
+				});
+				
 		// 拖动进度条的监听器
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -238,15 +260,7 @@ public class PlayerActivity extends ActionBarActivity {
 			}
 		});
 
-		// Last按钮--上一曲操作
-		LastButton.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View arg0) {
-				PlayerFactory.LastMusic();
-				textView.setText(PlayerFactory.getFileName());
-				handler.post(updateThread);
-				SPButton.setText("暂停");
-			}
-		});
+		
 	}
 
 	@Override

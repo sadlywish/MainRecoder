@@ -145,14 +145,14 @@ public class PlayerFactory {
 	public static void nextMusic() {
 		stop();
 		if (++mListItem >= mList.size()) {
-//			//下一曲到底时对话框提醒+&&+播放列表的最后一曲
-//			new AlertDialog.Builder(activity)
-//							.setTitle("提示")
-//							.setMessage("已经是最后一个录音啦！")
-//							.setPositiveButton("确定", null)
-//							.create()
-//							.show();
-			mListItem = 0;
+////			//下一曲到底时对话框提醒+&&+播放列表的最后一曲
+////			new AlertDialog.Builder(activity)
+////							.setTitle("提示")
+////							.setMessage("已经是最后一个录音啦！")
+////							.setPositiveButton("确定", null)
+////							.create()
+////							.show();
+			mListItem = mList.size()-1;
 		}
 		inti();
 		play();
@@ -170,7 +170,7 @@ public class PlayerFactory {
 //			.create()
 //			.show();
 			
-			mListItem = mList.size()-1;
+			mListItem = 0;
 		}
 		inti();
 		play();
