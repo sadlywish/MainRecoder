@@ -85,6 +85,7 @@ public class PlayerActivity extends ActionBarActivity {
 		// TODO Auto-generated method stub
 		PlayerFactory.release();
 		super.onDestroy();
+		handler.removeCallbacks(updateThread);
 	}
 
 	// 构建Button、seekBar实例对象
@@ -117,11 +118,25 @@ public class PlayerActivity extends ActionBarActivity {
 			// 获得现在歌曲播放的位置并设置为进度条的值
 			seekBar.setProgress(PlayerFactory.getPlayRate());
 			// System.out.println(PlayerFactory.getPlayRate());
+			
+//			System.out.println(""+ PlayerFactory.getMediaPlayer().getCurrentPosition());
+//			System.out.println(""+ PlayerFactory.getMediaPlayer().getDuration());
+			
+			//当录音播放结束后，重置进度条和播放时间
+			if(PlayerFactory.getMediaPlayer().getCurrentPosition()+80==PlayerFactory.getMediaPlayer().getDuration())
+			{
+
+				seekBar.setProgress(0);
+				nowTime.setText("00:00");
+				SPButton.setText("播放");
+			}
+			
 			// 每次延迟100毫秒启动线程
 			handler.postDelayed(updateThread, 100);
 		}
 	};
-
+	
+	
 	private void setListener() {
 		// DeleteButton按钮
 		DeleteButton.setOnClickListener(new Button.OnClickListener() {

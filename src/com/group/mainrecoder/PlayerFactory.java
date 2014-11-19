@@ -145,13 +145,6 @@ public class PlayerFactory {
 	public static void nextMusic() {
 		stop();
 		if (++mListItem >= mList.size()) {
-////			//下一曲到底时对话框提醒+&&+播放列表的最后一曲
-////			new AlertDialog.Builder(activity)
-////							.setTitle("提示")
-////							.setMessage("已经是最后一个录音啦！")
-////							.setPositiveButton("确定", null)
-////							.create()
-////							.show();
 			mListItem = mList.size()-1;
 		}
 		inti();
@@ -162,14 +155,6 @@ public class PlayerFactory {
 	public static void LastMusic() {
 		stop();
 		if (--mListItem < 0) {
-//			//上一曲到顶时对话框提醒+&&+播放列表的第一曲
-//			new AlertDialog.Builder(activity)
-//			.setTitle("提示")
-//			.setMessage("已经是第一个录音啦！")
-//			.setPositiveButton("确定", null)
-//			.create()
-//			.show();
-			
 			mListItem = 0;
 		}
 		inti();
@@ -195,7 +180,7 @@ public class PlayerFactory {
 	public static int getPlayRate() {
 		if (isPrepare) {
 			int r = (int)((double)mediaPlayer.getCurrentPosition()
-					/ (double)mediaPlayer.getDuration() *10000f);
+					/ (double)(mediaPlayer.getDuration()-80) *10000f);
 			return r;
 		} else {
 			return 0;
@@ -266,5 +251,7 @@ public class PlayerFactory {
 		isPrepare = false;
 		mediaPlayer.reset();
 	}
+	
+	
 
 }
