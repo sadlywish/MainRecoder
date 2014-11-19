@@ -3,9 +3,11 @@ package com.group.mainrecoder;
 import java.io.File;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 
 public class RecoderFactory {
 	private static MediaRecorder mediaRecorder;
@@ -13,6 +15,15 @@ public class RecoderFactory {
 	private static long timestep = 0;
 	private static boolean isRecoding = false;
 	private static int count = 1;//记录暂停数
+	private static SharedPreferences pref = null;
+	
+	public static SharedPreferences getPref() {
+		return pref;
+	}
+
+	public static void setPref(SharedPreferences prefs) {
+		pref = prefs;
+	}
 
 	public static long getTimestep() {
 		return timestep;
@@ -57,7 +68,13 @@ public class RecoderFactory {
 			// 设置音频录入源
 			mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 			// 设置录制音频的输出格式
-			mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
+			if (pref.getString("recoderType", null).equals("amr")) {
+				mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);	
+			}
+			if (pref.getString("recoderType", null).equals("3gpp")) {
+				mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+			}
+
 			// 设置音频的编码格式
 			mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 			// 创建一个临时的音频输出文件

@@ -1,127 +1,101 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.bjtu.mysoundrecorder.PlayerActivity" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:background="#FFFFFF"
-        android:orientation="vertical" >
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+	    android:background="#FFFFFF"
+	    android:orientation="vertical" >
 
-        <!-- 显示删除按钮 -->
+	    <!-- 显示删除按钮 -->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="#FFFFFF"
-            android:gravity="right"
-            android:orientation="horizontal" >
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.43"
+	        android:gravity="right"
+	        android:background="#FFFFFF"
+	        android:orientation="horizontal" >
+ 
+	        <Button
+	            android:id="@+id/DeleteButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/delete" />
+ 	            
+	    </LinearLayout>
 
-            <Button
-                android:id="@+id/DeleteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/delete" />
-        </LinearLayout>
+	    <!-- 显示录音信息 -->
 
-        <!-- 显示录音信息 -->
+	    <TextView
+	        android:id="@+id/SoundMessage"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1.56"
+	        android:gravity="center"
+	        android:text="" />
 
-        <TextView
-            android:id="@+id/SoundMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.45"
-            android:gravity="center"
-            android:text="录音名称" />
+	    <!-- 显示进度条 -->
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="0.77"
+	        android:background="#FFFFFF"
+	        android:orientation="horizontal" >
 
-        <!-- 显示进度条 -->
+	        <SeekBar
+	            android:id="@+id/SeekBar"
+	            android:layout_width="290dp"
+	            android:layout_height="wrap_content" />
+	    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:orientation="horizontal" >
+	    <!-- 显示播放器按钮 -->
 
-            <SeekBar
-                android:id="@+id/SeekBar"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.26"
+	        android:orientation="horizontal" >
 
-        <!-- 播放时间显示 -->
+	        <!-- 上一曲按钮 -->
+	        <Button
+	            android:id="@+id/LastButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/last" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:orientation="horizontal" >
-
-            <!-- 当前播放时间 -->
-            <TextView
-                android:id="@+id/NowTime"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="left"
-                android:text="00:00" />
-            
-            <!-- 录音时长 -->
-            <TextView
-                android:id="@+id/TotalTime"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="right"
-                android:text="00:00" />
-
-        </LinearLayout>
-
-        <!-- 显示播放器按钮 -->
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.07"
-            android:orientation="horizontal" >
-
-            <!-- 上一曲按钮 -->
-
-            <Button
-                android:id="@+id/LastButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/last" />
-
-            <!-- 播放/暂停按钮 -->
-
-            <Button
-                android:id="@+id/SPButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/play" />
-
-            <!-- 停止按钮 -->
-
-            <Button
-                android:id="@+id/StopButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/stop" />
-
-            <!-- 下一曲曲按钮 -->
-
-            <Button
-                android:id="@+id/NextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/next" />
-        </LinearLayout>
-    </LinearLayout>
+	        <!-- 播放/暂停按钮 -->
+	        <Button
+	            android:id="@+id/SPButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/play" />	        
+	        
+	        <!-- 停止按钮 -->
+	        <Button
+	            android:id="@+id/StopButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/stop" />
+	        
+	        <!-- 下一曲曲按钮 -->
+	        <Button
+	            android:id="@+id/NextButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/next" />
+	    </LinearLayout>
+	    
+	    
+	</LinearLayout>
 
 </RelativeLayout>

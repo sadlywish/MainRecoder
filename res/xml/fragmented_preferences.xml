@@ -36,8 +36,8 @@
                 android:key="recoderType"
                 android:title="录音格式"
                 android:summary="录音格式"
-                android:entries="@array/recoderEntity"
-                android:entryValues="@array/recoderType"
+                android:entries="@array/recoderType"
+                android:entryValues="@array/recoderEntity"
                 android:dialogTitle="录音格式" />
 
     </PreferenceCategory>

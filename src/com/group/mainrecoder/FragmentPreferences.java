@@ -24,17 +24,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.ActionBarActivity;
 
 /**
  * Demonstration of PreferenceFragment, showing a single fragment in an
  * activity.
  */
-public class FragmentPreferences extends Activity {
+public class FragmentPreferences extends ActionBarActivity {
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new PrefsFragment()).commit();

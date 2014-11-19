@@ -29,6 +29,7 @@ public class DetailActivity extends ActionBarActivity {
 	private String fileName;
 	private EditText textView;
 	private Activity activity;
+	private String suffix;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,13 @@ public class DetailActivity extends ActionBarActivity {
 			final View view = inflater.inflate(R.layout.renamedialog, null);
 			textView = (EditText) view.findViewById(R.id.rename);
 			textView.setText(fileName.substring(0, fileName.lastIndexOf(".")));
+			int dot = fileName.lastIndexOf('.');
+			if ((dot > -1) && (dot < (fileName.length() - 1))) {
+				suffix = fileName.substring(dot + 1);
+			}
+			TextView suffixview = (TextView) view
+					.findViewById(R.id.rename_Suffix);
+			suffixview.setText("." + suffix);
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("重命名").setView(view)
 					.setPositiveButton("确定", new OnClickListener() {
@@ -68,14 +76,14 @@ public class DetailActivity extends ActionBarActivity {
 							try {
 								boolean succese = FileManagement
 										.renameMusicFile(fileName,
-												 textView.getText()
-														+ ".amr");
+												textView.getText() + "."
+														+ suffix);
 								if (succese) {
 									Toast.makeText(activity, "文件重命名成功",
-											Toast.LENGTH_SHORT);
+											Toast.LENGTH_SHORT).show();
 								} else {
 									Toast.makeText(activity, "文件重名，重命名失败",
-											Toast.LENGTH_SHORT);
+											Toast.LENGTH_SHORT).show();
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -100,8 +108,15 @@ public class DetailActivity extends ActionBarActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							FileManagement.deleteMusicFlie(fileName);
-							Intent fileListIntent = new Intent(activity, FileListActivity.class);
-							startActivity(fileListIntent);
+							if (FileManagement.getMusicNameList().size() == 0) {
+								Intent fileListIntent = new Intent(activity,
+										RecoderActivity.class);
+								startActivity(fileListIntent);
+							} else {
+								Intent fileListIntent = new Intent(activity,
+										FileListActivity.class);
+								startActivity(fileListIntent);
+							}
 						}
 					}).setNegativeButton("返回", null).create().show();
 			// Dialog dialog = builder.create();

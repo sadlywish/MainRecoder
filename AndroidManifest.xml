@@ -4,10 +4,9 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-
-    <uses-permission  android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS"/>
-    <uses-permission  android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission  android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -28,11 +27,22 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.group.mainrecoder.RecoderActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.group.mainrecoder.FileListActivity"
             android:label="@string/app_name" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.group.mainrecoder.MainActivity" />
+                android:value="com.group.mainrecoder.RecoderActivity" />
+        </activity>
+        <activity
+            android:name="com.group.mainrecoder.FragmentPreferences"
+            android:label="@string/app_name" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.group.mainrecoder.RecoderActivity" />
         </activity>
         <activity
             android:name="com.group.mainrecoder.PlayerActivity"

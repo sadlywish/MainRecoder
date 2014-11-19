@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.net.rtp.RtpStream;
 import android.os.Environment;
 
@@ -25,7 +26,32 @@ public class FileManagement {
 	private static String tempDir = "/Recoder/temp/";
 
 	private static String tempname = "temp";
-	private static String suffix = ".amr";
+	private static String suffix;
+	private static List<String> suffixs;
+	private static SharedPreferences pref;
+
+	public static SharedPreferences getPref() {
+		return pref;
+	}
+
+	public static void setPref(SharedPreferences pref) {
+		FileManagement.pref = pref;
+	}
+
+	public static String getSuffix() {
+		return "." + pref.getString("recoderType", "amr");
+	}
+
+	public static List<String> getSuffixs() {
+		return suffixs;
+	}
+
+	public static void setSuffixs(String[] suffixList) {
+		suffixs = new ArrayList<String>();
+		for (int i = 0; i < suffixList.length; i++) {
+			suffixs.add(suffixList[i]);
+		}
+	}
 
 	/**
 	 * @return 完整播放器路径，不包括文件名
@@ -44,7 +70,7 @@ public class FileManagement {
 	public static String getTempsfile(int count) {
 		return Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_MUSIC).getPath()
-				+ tempDir + tempname + count + suffix;
+				+ tempDir + tempname + count + getSuffix();
 	}
 
 	/**
@@ -72,12 +98,16 @@ public class FileManagement {
 	 * @return 录音文件名列表
 	 */
 	public static List<String> getMusicNameList() {
+		List<String> nameList = null;
 		File file = new File(getPlayerDir());
 		File[] musics = file.listFiles();
-		List<String> nameList = new ArrayList<String>();
+		nameList = new ArrayList<String>();
 		for (int i = 0; i < musics.length; i++) {
-			if (musics[i].isFile() && musics[i].getName().endsWith(".amr")) {
-				nameList.add(musics[i].getName());
+			for (int j = 0; j < suffixs.size(); j++) {
+				if (musics[i].isFile()
+						&& musics[i].getName().endsWith("." + suffixs.get(j))) {
+					nameList.add(musics[i].getName());
+				}
 			}
 		}
 		return nameList;
@@ -110,15 +140,16 @@ public class FileManagement {
 	 * @param count
 	 * @return 最终存储文件名
 	 */
-	public static String saveTempFile(String fileName, int count, Activity activity) {
-		File newFile = new File(getPlayerDir() + fileName + suffix);
+	public static String saveTempFile(String fileName, int count,
+			Activity activity) {
+		File newFile = new File(getPlayerDir() + fileName + getSuffix());
 		int i = 1;
 		// 对文件进行重命名检查
 		// 如果文件存在，则在文件名后追加(1)、(2)...
 		for (i = 1; i >= 1; i++) {
 			if (newFile.exists()) {
 				newFile = new File(getPlayerDir() + fileName + "(" + i + ")"
-						+ suffix);
+						+ getSuffix());
 			} else {
 				break;
 			}
@@ -131,11 +162,11 @@ public class FileManagement {
 			for (int a = 1; a <= count; a++) {
 				list.add(getTempsfile(a));
 			}
-			getInputCollection(list, newFile,activity);
-			
+			getInputCollection(list, newFile, activity);
+
 		}
 		if (i > 1) {
-			fileName = fileName + "(" + (i - 1) + ")" + suffix;
+			fileName = fileName + "(" + (i - 1) + ")" + getSuffix();
 		}
 		return fileName;
 	}
@@ -212,7 +243,8 @@ public class FileManagement {
 		return flag;
 	}
 
-	public static void getInputCollection(List list, File filename, Activity activity) { 
+	public static void getInputCollection(List list, File filename,
+			Activity activity) {
 		// 创建音频文件,合并的文件放这里
 		File file1 = filename;
 		FileOutputStream fileOutputStream = null;
@@ -226,7 +258,7 @@ public class FileManagement {
 			}
 		}
 		try {
-			fileOutputStream = new FileOutputStream(file1,true);
+			fileOutputStream = new FileOutputStream(file1, true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
