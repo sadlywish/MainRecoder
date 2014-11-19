@@ -8,6 +8,7 @@ import com.example.mainrecoder.R;
 import com.example.mainrecoder.R.id;
 import com.example.mainrecoder.R.layout;
 import com.example.mainrecoder.R.menu;
+import com.group.mainrecoder.RecoderFactory.testInterface;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -34,7 +35,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RecoderActivity extends ActionBarActivity {
+public class RecoderActivity extends ActionBarActivity implements testInterface {
 	final Activity activity = this;
 	private SharedPreferences pref;
 	private EditText textView;
@@ -49,7 +50,7 @@ public class RecoderActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		RecoderFactory.setPref(pref);
-
+		RecoderFactory.setInterface1(this);
 		// SharedPreferences sharedPref = new
 		// Activity().getPreferences(activity.MODE_ENABLE_WRITE_AHEAD_LOGGING);
 		start = (Button) findViewById(R.id.start);
@@ -142,7 +143,7 @@ public class RecoderActivity extends ActionBarActivity {
 								String name = RecoderFactory.save(textView
 										.getText().toString(), activity);
 								Toast.makeText(activity, name,
-										Toast.LENGTH_SHORT);
+										Toast.LENGTH_SHORT).show();
 							}
 						}).setPositiveButton("放弃", new OnClickListener() {
 
@@ -207,6 +208,12 @@ public class RecoderActivity extends ActionBarActivity {
             android.os.Process.killProcess(Process.myPid());  
 		}
 		return;
+	}
+
+	@Override
+	public void test() {
+		System.out.println("test");
+		
 	}
 
 }

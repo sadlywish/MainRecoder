@@ -16,7 +16,18 @@ public class RecoderFactory {
 	private static boolean isRecoding = false;
 	private static int count = 1;//记录暂停数
 	private static SharedPreferences pref = null;
+	private static testInterface interface1;
 	
+	
+	
+	public static testInterface getInterface1() {
+		return interface1;
+	}
+
+	public static void setInterface1(testInterface interface1) {
+		RecoderFactory.interface1 = interface1;
+	}
+
 	public static SharedPreferences getPref() {
 		return pref;
 	}
@@ -54,6 +65,12 @@ public class RecoderFactory {
 	}
 
 	public static void start() {
+		try {
+			interface1.test();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			String pathStr = FileManagement.getTempsfile(count);
 			File file = new File(pathStr);
@@ -112,7 +129,7 @@ public class RecoderFactory {
 		mediaRecorder = null;
 		count++;
 	}
-	
+
 	public static String save (String fileName , Activity activity){
 		String finalName = FileManagement.saveTempFile(fileName, count, activity);
 		FileManagement.clearTempDir();
@@ -128,5 +145,9 @@ public class RecoderFactory {
 			return true;
 		}
 		return false;
+	}
+	
+	public interface testInterface{
+		public void test ();
 	}
 }

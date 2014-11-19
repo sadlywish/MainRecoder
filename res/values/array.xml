@@ -2,7 +2,7 @@
 <resources>
     <string-array name="recoderType">
         <item>amr</item>
-        <item >3gpp(暂不支持暂停播放)</item>
+        <item >3gpp(暂不支持录音暂停)</item>
     </string-array>
      <string-array name="recoderEntity">
         <item>amr</item>
