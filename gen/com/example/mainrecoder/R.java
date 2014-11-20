@@ -1090,7 +1090,7 @@ containing a value of this type.
         public static final int NowTime=0x7f060046;
         public static final int SPButton=0x7f060049;
         public static final int SeekBar=0x7f060045;
-        public static final int Setting=0x7f060057;
+        public static final int Setting=0x7f060056;
         public static final int SoundMessage=0x7f060044;
         public static final int StopButton=0x7f06004a;
         public static final int TotalTime=0x7f060047;
@@ -1102,13 +1102,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f060023;
         public static final int action_bar_title=0x7f060022;
         public static final int action_context_bar=0x7f06001d;
-        public static final int action_delete=0x7f060054;
-        public static final int action_index=0x7f060056;
+        public static final int action_delete=0x7f060053;
+        public static final int action_index=0x7f060055;
         public static final int action_menu_divider=0x7f060016;
         public static final int action_menu_presenter=0x7f060017;
         public static final int action_mode_close_button=0x7f060024;
-        public static final int action_rename=0x7f060053;
-        public static final int action_share=0x7f060055;
+        public static final int action_rename=0x7f060052;
+        public static final int action_share=0x7f060054;
         public static final int activity_chooser_view_content=0x7f060025;
         public static final int always=0x7f06000b;
         public static final int beginning=0x7f060011;
@@ -1138,7 +1138,6 @@ containing a value of this type.
         public static final int normal=0x7f060000;
         public static final int notice=0x7f06004d;
         public static final int pause=0x7f060041;
-        public static final int play_btn=0x7f060051;
         public static final int progress_circular=0x7f060018;
         public static final int progress_horizontal=0x7f060019;
         public static final int radio=0x7f06002f;
@@ -1170,7 +1169,7 @@ containing a value of this type.
         public static final int top_action_bar=0x7f060020;
         public static final int up=0x7f060021;
         public static final int useLogo=0x7f060003;
-        public static final int view_btn=0x7f060052;
+        public static final int view_btn=0x7f060051;
         public static final int withText=0x7f06000c;
     }
     public static final class integer {
