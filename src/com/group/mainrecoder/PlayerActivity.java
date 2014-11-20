@@ -194,7 +194,6 @@ public class PlayerActivity extends ActionBarActivity {
 				SPButton.setText("播放");
 				seekBar.setProgress(0);
 				nowTime.setText("00:00");
-				totalTime.setText("00:00");
 				handler.removeCallbacks(updateThread);
 			}
 		});

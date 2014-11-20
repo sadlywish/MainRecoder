@@ -153,6 +153,20 @@ public class RecordingListFragment extends ListFragment {
 					getActivity().startActivity(intent);
 				}
 			});
+			convertView.setClickable(true);
+			convertView.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(getActivity(),
+							PlayerActivity.class);
+					intent.putExtra("filename",
+							(String) mData.get(count).get("title"));
+					
+					getActivity().startActivity(intent);
+				}
+			});
 			return convertView;
 		}
 

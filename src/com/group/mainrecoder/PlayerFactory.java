@@ -94,7 +94,7 @@ public class PlayerFactory {
 	 * @param path
 	 *            音频文件路径
 	 */
-	private static void inti() {
+	public static void inti() {
 		// 重置mPlayer
 		mediaPlayer.reset();
 		// 设置播放文件的路径
@@ -166,10 +166,10 @@ public class PlayerFactory {
 	 */
 	public static void stop() {
 		// 判断是否在播放
-		if (mediaPlayer.isPlaying()) {
+//		if (mediaPlayer.isPlaying()||) {
 			mediaPlayer.reset(); // 重置mediaPlayer到初始化状态
 			isPrepare = false; // 将播放器内容设置为空
-		}
+//		}
 	}
 
 	/**
