@@ -68,7 +68,7 @@ public class RecordingListFragment extends ListFragment {
 		public TextView title;
 		public TextView info;
 		public Button viewBtn;
-		public Button playBtn;
+//		public Button playBtn;
 	}
 
 	public class MyAdapter extends BaseAdapter {
@@ -110,8 +110,8 @@ public class RecordingListFragment extends ListFragment {
 				holder.info = (TextView) convertView.findViewById(R.id.info);
 				holder.viewBtn = (Button) convertView
 						.findViewById(R.id.view_btn);
-				holder.playBtn = (Button) convertView
-						.findViewById(R.id.play_btn);
+//				holder.playBtn = (Button) convertView
+//						.findViewById(R.id.play_btn);
 				convertView.setTag(holder);
 
 			} else {
@@ -138,7 +138,9 @@ public class RecordingListFragment extends ListFragment {
 					getActivity().startActivity(intent);
 				}
 			});
-			holder.playBtn.setOnClickListener(new View.OnClickListener() {
+/*
+ *录音列表播放按钮
+ * 			holder.playBtn.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -153,6 +155,8 @@ public class RecordingListFragment extends ListFragment {
 					getActivity().startActivity(intent);
 				}
 			});
+*/
+			//录音列表项点击播放
 			convertView.setClickable(true);
 			convertView.setOnClickListener(new View.OnClickListener() {
 				
@@ -167,6 +171,7 @@ public class RecordingListFragment extends ListFragment {
 					getActivity().startActivity(intent);
 				}
 			});
+			
 			return convertView;
 		}
 
