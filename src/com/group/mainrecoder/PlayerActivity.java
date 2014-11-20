@@ -34,14 +34,8 @@ import com.group.mainrecoder.RecordingListFragment.MyAdapter;
 
 public class PlayerActivity extends ActionBarActivity {
 	final Activity activity = this;
-	// 定义播放器状态（真为有文件在播放）
-	private boolean isIsprepare = false;
-	
-	// 播放列表
-		static private List<String> mList = new ArrayList<String>();
 
 	// 定义按钮
-	private Button DeleteButton = null;
 	private Button LastButton = null;
 	private Button SPButton = null;
 	private Button StopButton = null;
@@ -54,9 +48,6 @@ public class PlayerActivity extends ActionBarActivity {
 
 	// 定义进度条
 	private SeekBar seekBar;
-
-	// 声明Player
-	private MediaPlayer mPlayer = null;
 
 	// 声明播放文件名
 	private String soundName = null;
@@ -76,7 +67,9 @@ public class PlayerActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle("录音播放");
 		findView();
-		setListener();	
+		setListener();
+		PlayerFactory.play();
+		handler.post(updateThread);
 	}
 
 	// 脱离播放界面时释放资源
@@ -90,7 +83,6 @@ public class PlayerActivity extends ActionBarActivity {
 
 	// 构建Button、seekBar实例对象
 	private void findView() {
-		DeleteButton = (Button) this.findViewById(R.id.DeleteButton);
 		LastButton = (Button) this.findViewById(R.id.LastButton);
 		SPButton = (Button) this.findViewById(R.id.SPButton);
 		StopButton = (Button) this.findViewById(R.id.StopButton);
@@ -138,7 +130,9 @@ public class PlayerActivity extends ActionBarActivity {
 	
 	
 	private void setListener() {
-		// DeleteButton按钮
+		
+		/*
+		 * // DeleteButton按钮
 		DeleteButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View arg0) {
 				AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
@@ -151,6 +145,8 @@ public class PlayerActivity extends ActionBarActivity {
 								FileManagement.deleteMusicFlie(PlayerFactory.getFileName());
 								//删除后检查是否有录音，没有就返回录音界面，有就播放下一曲
 								PlayerFactory.setmList(FileManagement.getMusicNameList());
+								
+								PlayerFactory.stop();
 
 								//判断指针位置，放置数值溢出
 								if(PlayerFactory.getmListItem()-1 >= PlayerFactory.getmList().size())
@@ -163,18 +159,18 @@ public class PlayerActivity extends ActionBarActivity {
 								}
 								else if( PlayerFactory.getmList().size()==0)
 								{
-									/**
+									*//**
 									 * 
 									 * 删除后如果列表为空，跳转到录音界面
 									 *
-									 */
+									 *//*
 									Intent intent = new Intent(activity,RecoderActivity.class);
 									activity.startActivity(intent);
 									onDestroy();
 								}
 								else{
 									// 删除后自动播放下一曲
-									PlayerFactory.nextMusic();
+									PlayerFactory.play();
 									textView.setText(PlayerFactory.getFileName());
 									handler.post(updateThread);
 									SPButton.setText("暂停");
@@ -186,6 +182,7 @@ public class PlayerActivity extends ActionBarActivity {
 						.show();
 			}
 		});
+		*/
 
 		// 停止按钮--停止播放操作
 		StopButton.setOnClickListener(new Button.OnClickListener() {
@@ -283,8 +280,8 @@ public class PlayerActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.blankmenu, menu);
+		// Inflate the menu; this addsp items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.player_del, menu);
 		return true;
 	}
 
@@ -294,6 +291,58 @@ public class PlayerActivity extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
+		if(id == R.id.action_delete){
+			AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+			dialog.setTitle("确认删除")
+					.setMessage("确定要删除吗？")
+					.setPositiveButton("刪除", new OnClickListener(){
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							
+							FileManagement.deleteMusicFlie(PlayerFactory.getFileName());
+							//删除后检查是否有录音，没有就返回录音界面，有就播放下一曲
+							PlayerFactory.setmList(FileManagement.getMusicNameList());
+							
+							PlayerFactory.stop();
+
+							//判断指针位置，放置数值溢出
+							try {
+								if(PlayerFactory.getmListItem() > PlayerFactory.getmList().size()-1)
+								{
+									PlayerFactory.setmListItem(0);
+									PlayerFactory.play();
+									textView.setText(PlayerFactory.getFileName());
+									handler.post(updateThread);
+									SPButton.setText("暂停");
+								}
+								else if( PlayerFactory.getmList().size()==0)
+								{
+									/**
+									 * 
+									 * 删除后如果列表为空，跳转到录音界面
+									 *
+									 */
+									Intent intent = new Intent(activity,RecoderActivity.class);
+									activity.startActivity(intent);
+									onDestroy();
+								}
+								else{
+									// 删除后自动播放下一曲
+									PlayerFactory.play();
+									textView.setText(PlayerFactory.getFileName());
+									handler.post(updateThread);
+									SPButton.setText("暂停");
+								}
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}							
+						}							
+					})
+					.setNegativeButton("取消", null)
+					.create()
+					.show();
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
