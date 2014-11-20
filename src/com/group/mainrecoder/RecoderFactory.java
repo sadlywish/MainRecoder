@@ -65,12 +65,12 @@ public class RecoderFactory {
 	}
 
 	public static void start() {
-		try {
+/*		try {
 			interface1.test();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
 		try {
 			String pathStr = FileManagement.getTempsfile(count);
 			File file = new File(pathStr);
@@ -103,8 +103,8 @@ public class RecoderFactory {
 			// 准备、开始
 			mediaRecorder.prepare();
 			mediaRecorder.start();
+			setBaseTime(SystemClock.elapsedRealtime());
 			if (count ==1) {
-				setBaseTime(SystemClock.elapsedRealtime());
 				setTimestep(1);
 			}
 			setRecoding(true);
@@ -122,7 +122,7 @@ public class RecoderFactory {
 	}
 
 	public static void pause() {
-		setTimestep(SystemClock.elapsedRealtime() - baseTime);
+		setTimestep(getTimestep()+SystemClock.elapsedRealtime() - baseTime);
 		setRecoding(false);
 		mediaRecorder.stop();
 		mediaRecorder.release();
