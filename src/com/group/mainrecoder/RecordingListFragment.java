@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.example.mainrecoder.R;
 
+import android.R.color;
+import android.R.drawable;
 import android.R.raw;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,7 +16,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -56,7 +60,7 @@ public class RecordingListFragment extends ListFragment {
 
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("title", details.get(i).getFileName());
-			map.put("info","时间长度:"+ details.get(i).getSringTime());
+			map.put("info", "时间长度:" + details.get(i).getSringTime());
 			// map.put("img", R.drawable.i1);
 			list.add(map);
 		}
@@ -68,7 +72,7 @@ public class RecordingListFragment extends ListFragment {
 		public TextView title;
 		public TextView info;
 		public Button viewBtn;
-//		public Button playBtn;
+		// public Button playBtn;
 	}
 
 	public class MyAdapter extends BaseAdapter {
@@ -88,19 +92,20 @@ public class RecordingListFragment extends ListFragment {
 		@Override
 		public Object getItem(int arg0) {
 			// TODO Auto-generated method stub
-			return null;
+			return arg0;
 		}
 
 		@Override
 		public long getItemId(int arg0) {
 			// TODO Auto-generated method stub
-			return 0;
+			return arg0;
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final int count = position;
 			ViewHolder holder = null;
+			final View view = convertView;
 			if (convertView == null) {
 
 				holder = new ViewHolder();
@@ -110,8 +115,8 @@ public class RecordingListFragment extends ListFragment {
 				holder.info = (TextView) convertView.findViewById(R.id.info);
 				holder.viewBtn = (Button) convertView
 						.findViewById(R.id.view_btn);
-//				holder.playBtn = (Button) convertView
-//						.findViewById(R.id.play_btn);
+				// holder.playBtn = (Button) convertView
+				// .findViewById(R.id.play_btn);
 				convertView.setTag(holder);
 
 			} else {
@@ -130,7 +135,7 @@ public class RecordingListFragment extends ListFragment {
 					// AlertDialog.Builder builder = new AlertDialog.Builder(
 					// getActivity());
 					// builder.setTitle("详细").setMessage("该去哪").create().show();
-					System.out.println(count+"");
+					System.out.println(count + "");
 					Intent intent = new Intent(getActivity(),
 							DetailActivity.class);
 					intent.putExtra("filename",
@@ -138,40 +143,31 @@ public class RecordingListFragment extends ListFragment {
 					getActivity().startActivity(intent);
 				}
 			});
-/*
- *录音列表播放按钮
- * 			holder.playBtn.setOnClickListener(new View.OnClickListener() {
+			/*
+			 * 录音列表播放按钮 holder.playBtn.setOnClickListener(new
+			 * View.OnClickListener() {
+			 * 
+			 * @Override public void onClick(View v) { // AlertDialog.Builder
+			 * builder = new AlertDialog.Builder( // getActivity()); //
+			 * builder.setTitle("播放").setMessage("该是啥是啥").create().show();
+			 * Intent intent = new Intent(getActivity(), PlayerActivity.class);
+			 * intent.putExtra("filename", (String)
+			 * mData.get(count).get("title"));
+			 * 
+			 * getActivity().startActivity(intent); } });
+			 */
+			/*
+			 * //录音列表项点击播放 convertView.setClickable(true);
+			 * convertView.setOnClickListener(new View.OnClickListener() {
+			 * 
+			 * @Override public void onClick(View arg0) { // TODO Auto-generated
+			 * method stub Intent intent = new Intent(getActivity(),
+			 * PlayerActivity.class); intent.putExtra("filename", (String)
+			 * mData.get(count).get("title"));
+			 * 
+			 * getActivity().startActivity(intent); } });
+			 */
 
-				@Override
-				public void onClick(View v) {
-					// AlertDialog.Builder builder = new AlertDialog.Builder(
-					// getActivity());
-					// builder.setTitle("播放").setMessage("该是啥是啥").create().show();
-					Intent intent = new Intent(getActivity(),
-							PlayerActivity.class);
-					intent.putExtra("filename",
-							(String) mData.get(count).get("title"));
-					
-					getActivity().startActivity(intent);
-				}
-			});
-*/
-			//录音列表项点击播放
-			convertView.setClickable(true);
-			convertView.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(getActivity(),
-							PlayerActivity.class);
-					intent.putExtra("filename",
-							(String) mData.get(count).get("title"));
-					
-					getActivity().startActivity(intent);
-				}
-			});
-			
 			return convertView;
 		}
 
@@ -179,8 +175,12 @@ public class RecordingListFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("播放").setMessage("该播就播吧").create().show();
+		// AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		// builder.setTitle("播放").setMessage("该播就播吧").create().show();
+		Intent intent = new Intent(getActivity(), PlayerActivity.class);
+		intent.putExtra("filename", (String) mData.get(position).get("title"));
+
+		getActivity().startActivity(intent);
 	}
 
 }

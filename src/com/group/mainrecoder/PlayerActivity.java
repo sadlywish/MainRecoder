@@ -123,7 +123,7 @@ public class PlayerActivity extends ActionBarActivity {
 //			System.out.println(""+ PlayerFactory.getMediaPlayer().getDuration());
 			
 			//当录音播放结束后，重置进度条和播放时间
-			if(PlayerFactory.getMediaPlayer().getCurrentPosition()+80==PlayerFactory.getMediaPlayer().getDuration())
+			if(PlayerFactory.getMediaPlayer().getCurrentPosition()+80>=PlayerFactory.getMediaPlayer().getDuration())
 			{
 
 				seekBar.setProgress(0);
@@ -251,6 +251,7 @@ public class PlayerActivity extends ActionBarActivity {
 				// TODO Auto-generated method stub
 				SPButton.setText("暂停");
 				PlayerFactory.play();
+				handler.post(updateThread);
 			}
 
 			@Override
@@ -260,6 +261,9 @@ public class PlayerActivity extends ActionBarActivity {
 				//判断是否在播放以防报错
 				if(PlayerFactory.getMediaPlayer().isPlaying()){
 					PlayerFactory.pause();
+				}
+				if (!PlayerFactory.isIsprepare()) {
+					PlayerFactory.inti();
 				}
 
 			}
