@@ -282,7 +282,7 @@ public class KiiUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
-		} catch (UndefinedException e) {
+		} catch (UndefinedException e) {                                                                           
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
