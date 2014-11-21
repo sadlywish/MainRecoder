@@ -1,6 +1,10 @@
 package com.group.mainrecoder;
 
+import java.util.List;
+import java.util.Map;
+
 import com.example.mainrecoder.R;
+import com.group.mainrecoder.RecordingListFragment.MyAdapter;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -11,12 +15,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.os.Build;
 
 
 
 public class FileListActivity extends ActionBarActivity {
 
+	private ListView listView;
+	private List<Map<String, Object>> mData;
+	private MyAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +34,7 @@ public class FileListActivity extends ActionBarActivity {
 //                    .add(R.id.container, new PlaceholderFragment())
 //                    .commit();
 //        }
+//        mData = findViewById(R.id.list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("录音列表");
         

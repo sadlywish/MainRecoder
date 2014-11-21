@@ -69,6 +69,7 @@ public class PlayerActivity extends ActionBarActivity {
 		findView();
 		setListener();
 		PlayerFactory.play();
+		SPButton.setText("暂停");
 		handler.post(updateThread);
 	}
 

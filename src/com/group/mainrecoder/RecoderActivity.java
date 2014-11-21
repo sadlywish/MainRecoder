@@ -25,10 +25,12 @@ import android.os.Environment;
 import android.os.Process;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -210,6 +212,7 @@ public class RecoderActivity extends ActionBarActivity implements testInterface 
 		return;
 	}
 
+	
 	@Override
 	public void test() {
 		System.out.println("test");
