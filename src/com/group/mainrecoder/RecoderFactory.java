@@ -88,7 +88,7 @@ public class RecoderFactory {
 			if (pref.getString("recoderType", null).equals("amr")) {
 				mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);	
 			}
-			if (pref.getString("recoderType", null).equals("3gpp")) {
+			if (pref.getString("recoderType", null).equals("3gp")) {
 				mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
 			}
 
