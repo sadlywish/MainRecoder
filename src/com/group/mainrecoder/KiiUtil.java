@@ -43,7 +43,11 @@ import com.kii.cloud.storage.resumabletransfer.TerminatedException;
 public class KiiUtil {
 
 	/**
-	 * KiiObject 内键值对标准对应表 name:文件名 uploadTime:最后上传更新时间 size:文件大小 time:音频时长
+	 * KiiObject 内键值对标准对应表 
+	 * name:文件名 
+	 * uploadTime:最后上传更新时间
+	 * size:文件大小 
+	 * time:音频时长
 	 */
 
 	/**
@@ -52,7 +56,38 @@ public class KiiUtil {
 	 * @return 通用格式的在线文件文件信息表
 	 */
 	public static List<FileDetail> getOnlineFileList() {
-		return null;
+		KiiBucket bucket = Kii.bucket(AppConstants.APP_BUCKET_NAME);
+		KiiQueryResult<KiiObject> result = null;
+		try {
+			result = bucket.query(new KiiQuery());
+		} catch (BadRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnauthorizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ForbiddenException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConflictException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UndefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<KiiObject> objects = result.getResult();
+		List<FileDetail> details = new ArrayList<FileDetail>();
+		for (int i = 0; i < objects.size(); i++) {
+			details.add(new FileDetail(objects.get(i)));
+		}
+		return details;
 	}
 
 	/**
@@ -267,7 +302,41 @@ public class KiiUtil {
 	 * @return 完整信息
 	 */
 	public static FileDetail findOnlineFileDedailByName(String fileName) {
-		return null;
+		KiiBucket bucket = null;
+		bucket = Kii.bucket(AppConstants.APP_BUCKET_NAME);
+		KiiQuery query = null;
+		try {
+			query = new KiiQuery(KiiClause.equals("name", fileName));
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		List<KiiObject> list = null;
+		try {
+			list = bucket.query(query).getResult();
+		} catch (BadRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnauthorizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ForbiddenException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConflictException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UndefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new FileDetail(list.get(0));
 	}
 
 	/**
