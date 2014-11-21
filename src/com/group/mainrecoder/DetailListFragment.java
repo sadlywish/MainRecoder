@@ -33,6 +33,7 @@ public class DetailListFragment extends ListFragment {
 		String[] titles = {"文件名:", "时长:", "最后修改时间:","文件体积" };
 		FileDetail detail = new FileDetail(fileName);
 		String[] details = {detail.getFileName(), detail.getSringTime(), detail.getModiTimeTime(),detail.getSize() };
+		System.out.println(detail.getsizeall());
 		List<Map<String, String>> textList = new ArrayList<Map<String,String>>();
 		for (int i = 0; i < details.length; i++) {
 			Map<String, String> allText = new HashMap<String, String>();

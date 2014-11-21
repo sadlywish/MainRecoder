@@ -1,8 +1,28 @@
 package com.group.mainrecoder;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 import com.example.mainrecoder.R;
+import com.kii.cloud.storage.Kii;
+import com.kii.cloud.storage.KiiBucket;
+import com.kii.cloud.storage.KiiObject;
+import com.kii.cloud.storage.callback.KiiObjectCallBack;
+import com.kii.cloud.storage.exception.app.BadRequestException;
+import com.kii.cloud.storage.exception.app.ConflictException;
+import com.kii.cloud.storage.exception.app.ForbiddenException;
+import com.kii.cloud.storage.exception.app.NotFoundException;
+import com.kii.cloud.storage.exception.app.UnauthorizedException;
+import com.kii.cloud.storage.exception.app.UndefinedException;
+import com.kii.cloud.storage.resumabletransfer.AlreadyStartedException;
+import com.kii.cloud.storage.resumabletransfer.KiiRTransfer;
+import com.kii.cloud.storage.resumabletransfer.KiiRTransferCallback;
+import com.kii.cloud.storage.resumabletransfer.KiiRTransferProgressCallback;
+import com.kii.cloud.storage.resumabletransfer.KiiUploader;
+import com.kii.cloud.storage.resumabletransfer.StateStoreAccessException;
+import com.kii.cloud.storage.resumabletransfer.SuspendedException;
+import com.kii.cloud.storage.resumabletransfer.TerminatedException;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -125,9 +145,14 @@ public class DetailActivity extends ActionBarActivity {
 		}
 		if (id == R.id.action_share) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("分享").setMessage("分享录音文件")
-					.setPositiveButton("确定", null)
-					.setNegativeButton("返回", null).create().show();
+			builder.setTitle("同步").setMessage("同步录音文件")
+					.setPositiveButton("确定", new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							KiiUtil.uploadFile(activity, fileName);
+						}
+					}).setNegativeButton("返回", null).create().show();
 			// Dialog dialog = builder.create();
 			// dialog.show();
 			return true;

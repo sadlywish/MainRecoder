@@ -1,6 +1,21 @@
 package com.group.mainrecoder;
 
+import java.io.File;
 import java.util.List;
+
+import android.content.Context;
+import android.os.SystemClock;
+
+import com.kii.cloud.storage.Kii;
+import com.kii.cloud.storage.KiiBucket;
+import com.kii.cloud.storage.KiiObject;
+import com.kii.cloud.storage.resumabletransfer.AlreadyStartedException;
+import com.kii.cloud.storage.resumabletransfer.KiiRTransfer;
+import com.kii.cloud.storage.resumabletransfer.KiiRTransferProgressCallback;
+import com.kii.cloud.storage.resumabletransfer.KiiUploader;
+import com.kii.cloud.storage.resumabletransfer.StateStoreAccessException;
+import com.kii.cloud.storage.resumabletransfer.SuspendedException;
+import com.kii.cloud.storage.resumabletransfer.TerminatedException;
 
 public class KiiUtil {
 	
@@ -25,8 +40,49 @@ public class KiiUtil {
 	 * @param fileName 需上传文件名
 	 * @return 上传是否成功
 	 */
-	public static boolean uploadFile(String fileName){
-		return false;
+	public static boolean uploadFile(Context activity, String fileName){
+		FileDetail fileInfo = new FileDetail(fileName);
+		// TODO Auto-generated method stub
+		KiiBucket bucket = Kii
+				.bucket(AppConstants.APP_BUCKET_NAME);
+		KiiObject object = bucket.object();
+		object.set("name", fileInfo.getFileName());
+		object.set("uploadTime", SystemClock.elapsedRealtime());
+		object.set("size", fileInfo.getsizeall());
+		object.set("time", fileInfo.getTime());
+		File baseFile = new File(FileManagement
+				.getPlayerDir() + fileName);
+		KiiUploader uploader = object.uploader(activity,
+				baseFile);
+		try {
+			uploader.transfer(new KiiRTransferProgressCallback() {
+
+				@Override
+				public void onProgress(KiiRTransfer arg0,
+						long arg1, long arg2) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+		} catch (AlreadyStartedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (SuspendedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (TerminatedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (StateStoreAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	
+		return true;
 	}
 	
 	/**
@@ -46,5 +102,12 @@ public class KiiUtil {
 		return false;
 	}
 	
+	/**
+	 * 根据文件名寻找完整在线文件信息
+	 * @return 完整信息
+	 */
+	public static FileDetail findOnlineFileByName(){
+		return null;
+	}
 
 }

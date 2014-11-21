@@ -6,6 +6,7 @@ import java.io.RandomAccessFile;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -18,7 +19,9 @@ public class FileDetail {
 	private int status;//文件状态（0:本地/1:云端/2:同步）
 	private boolean conflict;//文件是否冲突
 	private String[] suffix = { "B", "KB", "MB", "GB", "TB" };
-
+	public long getsizeall(){
+		return this.size;
+	}
 	/**
 	 * 利用文件名获取对应信息的构造方法
 	 * 
@@ -38,6 +41,14 @@ public class FileDetail {
 		}
 	}
 
+	public FileDetail(String fileName, int status){
+		
+	}
+	
+	public FileDetail(String fileName, List<FileDetail> baseList){
+		
+	}
+	
 	public String getFileName() {
 		return fileName;
 	}
@@ -118,6 +129,22 @@ public class FileDetail {
 
 	public void setSize(long size) {
 		this.size = size;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public boolean isConflict() {
+		return conflict;
+	}
+
+	public void setConflict(boolean conflict) {
+		this.conflict = conflict;
 	}
 
 	public long getAmrDuration(File file) throws IOException {
