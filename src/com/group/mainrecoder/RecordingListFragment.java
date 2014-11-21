@@ -27,6 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RecordingListFragment extends ListFragment {
 
@@ -158,43 +159,6 @@ public class RecordingListFragment extends ListFragment {
 
 			holder.conflict.setText((String) mData.get(position).get("conflict"));
 			holder.status.setText((String) mData.get(position).get("status"));
-			convertView.setOnTouchListener(new OnTouchListener() {
-				
-				@Override
-				public boolean onTouch(View view, MotionEvent event) {
-					// TODO Auto-generated method stub
-					//获取滑动时候相应的ViewHolder，以便获取button按钮
-					final ViewHolder holder = (ViewHolder) view.getTag();//获取滑动时候相应的ViewHolder,以便获取button按钮
-					switch(event.getAction()){
-					//手指按下
-					case MotionEvent.ACTION_DOWN:
-						
-						downX = event.getX();//获取手指按下时的x坐标
-						System.out.println("起始位置:"+downX);
-						if(viewBtn != null){
-							viewBtn.setVisibility(View.GONE);//隐藏显示出来的button
-						}
-						break;
-						
-					//手指离开	
-					case MotionEvent.ACTION_UP:
-						upX = event.getX();//获取手指离开时的x坐标
-						System.out.println("結束位置:"+upX);
-
-						break;
-					}
-					if(holder.viewBtn != null){
-						if((downX - upX)>35){
-							holder.viewBtn.setVisibility(View.VISIBLE);//显示详细的按钮
-							viewBtn = holder.viewBtn;//赋值给全局的button
-							return true;//结束事件
-						}
-						return false;//释放事件，使onListItemClick可以执行
-					}
-					
-					return false;
-				}
-			} );
 
 			//详细Button的事件监听
 			holder.viewBtn.setOnClickListener(new View.OnClickListener() {
@@ -255,6 +219,10 @@ public class RecordingListFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		// AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		// builder.setTitle("播放").setMessage("该播就播吧").create().show();
+		if ((Integer)mData.get(position).get("statusKey")==1) {
+			Toast.makeText(getActivity(), "暂不支持直接播放云端文件，请同步后播放", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		Intent intent = new Intent(getActivity(), PlayerActivity.class);
 		intent.putExtra("filename", (String) mData.get(position).get("title"));
 		intent.putExtra("status", (Integer)mData.get(position).get("statusKey"));

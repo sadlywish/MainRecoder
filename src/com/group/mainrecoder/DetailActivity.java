@@ -5,24 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 import com.example.mainrecoder.R;
-import com.kii.cloud.storage.Kii;
-import com.kii.cloud.storage.KiiBucket;
-import com.kii.cloud.storage.KiiObject;
-import com.kii.cloud.storage.callback.KiiObjectCallBack;
-import com.kii.cloud.storage.exception.app.BadRequestException;
-import com.kii.cloud.storage.exception.app.ConflictException;
-import com.kii.cloud.storage.exception.app.ForbiddenException;
-import com.kii.cloud.storage.exception.app.NotFoundException;
-import com.kii.cloud.storage.exception.app.UnauthorizedException;
-import com.kii.cloud.storage.exception.app.UndefinedException;
-import com.kii.cloud.storage.resumabletransfer.AlreadyStartedException;
-import com.kii.cloud.storage.resumabletransfer.KiiRTransfer;
-import com.kii.cloud.storage.resumabletransfer.KiiRTransferCallback;
-import com.kii.cloud.storage.resumabletransfer.KiiRTransferProgressCallback;
-import com.kii.cloud.storage.resumabletransfer.KiiUploader;
-import com.kii.cloud.storage.resumabletransfer.StateStoreAccessException;
-import com.kii.cloud.storage.resumabletransfer.SuspendedException;
-import com.kii.cloud.storage.resumabletransfer.TerminatedException;
+
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -31,6 +14,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -54,7 +38,7 @@ public class DetailActivity extends ActionBarActivity {
 	private String suffix;
 	private int status;
 	private boolean conflict;
-
+	private String[] statusList = {"本地","云端","同步"};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,6 +90,7 @@ public class DetailActivity extends ActionBarActivity {
 										.renameMusicFile(fileName,
 												textView.getText() + "."
 														+ suffix);
+								boolean succesOnline = KiiUtil.renameFlie(fileName, 	textView.getText() + "."+ suffix);
 								if (succese) {
 									Toast.makeText(activity, "文件重命名成功",
 											Toast.LENGTH_SHORT).show();
@@ -118,8 +103,7 @@ public class DetailActivity extends ActionBarActivity {
 							}
 							Intent intent = new Intent(activity,
 									DetailActivity.class);
-							intent.putExtra("filename", textView.getText()
-									+ ".amr");
+							intent.putExtra("filename", textView.getText() + "."+ suffix);
 							activity.startActivity(intent);
 						}
 					}).setNegativeButton("返回", null).create().show();
@@ -130,26 +114,55 @@ public class DetailActivity extends ActionBarActivity {
 		}
 		if (id == R.id.action_delete) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("删除").setMessage("删除录音文件")
-					.setPositiveButton(R.string.apply, new OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
+			if (status==2) {
+				//定义复选框选项  
+		        final String[] multiChoiceItems = {"本地文件","云端文件"};  
+		        //复选框默认值：false=未选;true=选中 ,各自对应items[i]
+		        final boolean[] defaultSelectedStatus = {false,false};
+				builder.setTitle("删除").setMessage("请选择需要删除的文件").setMultiChoiceItems(multiChoiceItems, defaultSelectedStatus, new OnMultiChoiceClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+						// TODO Auto-generated method stub
+						 defaultSelectedStatus[which] = isChecked;
+					}
+				}).setPositiveButton(R.string.apply, new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						if (defaultSelectedStatus[0]) {
 							FileManagement.deleteMusicFlie(fileName);
-							if (FileManagement.getMusicNameList().size() == 0) {
-								Intent fileListIntent = new Intent(activity,
-										RecoderActivity.class);
-								startActivity(fileListIntent);
-							} else {
-								Intent fileListIntent = new Intent(activity,
-										FileListActivity.class);
-								startActivity(fileListIntent);
-							}
 						}
-					}).setNegativeButton("返回", null).create().show();
-			// Dialog dialog = builder.create();
-			// dialog.show();
-			return true;
+						if (defaultSelectedStatus[1]) {
+							KiiUtil.deleteOnlineFile(fileName);
+						}
+						Intent fileListIntent = new Intent(activity,
+								FileListActivity.class);
+						startActivity(fileListIntent);			
+					}
+				}).setNegativeButton("返回", null).create().show();
+				
+			}else{
+				builder.setTitle("删除").setMessage("删除"+statusList[status]+"录音文件")
+						.setPositiveButton(R.string.apply, new OnClickListener() {
+	
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								if (status==0) {
+									FileManagement.deleteMusicFlie(fileName);
+								} else {
+									KiiUtil.deleteOnlineFile(fileName);
+								}
+									Intent fileListIntent = new Intent(activity,
+											FileListActivity.class);
+									startActivity(fileListIntent);								
+							}
+						}).setNegativeButton("返回", null).create().show();
+				// Dialog dialog = builder.create();
+				// dialog.show();
+				return true;
+			}
 		}
 		if (id == R.id.action_share) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
