@@ -34,6 +34,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +57,8 @@ public class DetailActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail);
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+	    StrictMode.setThreadPolicy(policy);
 		fileName = getIntent().getStringExtra("filename");
 		activity = this;
 		this.getOverflowMenu();
@@ -150,7 +154,8 @@ public class DetailActivity extends ActionBarActivity {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							KiiUtil.uploadFile(activity, fileName);
+//							KiiUtil.uploadFile(activity, fileName);
+							handler.post(runThread);
 						}
 					}).setNegativeButton("返回", null).create().show();
 			// Dialog dialog = builder.create();
@@ -174,5 +179,14 @@ public class DetailActivity extends ActionBarActivity {
 			e.printStackTrace();
 		}
 	}
-
+ Handler handler = new Handler();
+ Runnable runThread = new Runnable() {
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		KiiUtil.downloadFlie(activity, "2014.amr");
+		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+	}
+};
 }
