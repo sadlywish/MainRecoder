@@ -185,8 +185,11 @@ public class DetailActivity extends ActionBarActivity {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		KiiUtil.downloadFlie(activity, "2014.amr");
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		AlertDialog dialog =builder.setTitle("下载中").setMessage("请稍等").setCancelable(false).show();
+		KiiUtil.downloadFlie(activity, "2014.amr");
+		dialog.dismiss();
+		Toast.makeText(activity, "同步完成", Toast.LENGTH_SHORT).show();
 	}
 };
 }
