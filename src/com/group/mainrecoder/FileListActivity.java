@@ -22,9 +22,6 @@ import android.os.Build;
 
 public class FileListActivity extends ActionBarActivity {
 
-	private ListView listView;
-	private List<Map<String, Object>> mData;
-	private MyAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +31,6 @@ public class FileListActivity extends ActionBarActivity {
 //                    .add(R.id.container, new PlaceholderFragment())
 //                    .commit();
 //        }
-//        mData = findViewById(R.id.list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("录音列表");
         
