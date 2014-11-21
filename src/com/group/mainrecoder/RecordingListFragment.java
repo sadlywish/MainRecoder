@@ -132,11 +132,9 @@ public class RecordingListFragment extends ListFragment {
 			return arg0;
 		}
 
-//		ViewHolder holder = null;
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			final int count = position;			 
-			final View view = convertView;
 			ViewHolder holder =null;
 			if (convertView == null) {
 
@@ -147,8 +145,6 @@ public class RecordingListFragment extends ListFragment {
 				holder.conflict =  (TextView) convertView.findViewById(R.id.conflict);
 				holder.status =  (TextView) convertView.findViewById(R.id.status);
 				holder.viewBtn = (Button) convertView.findViewById(R.id.view_btn);
-				// holder.playBtn = (Button) convertView
-				// .findViewById(R.id.play_btn);
 				convertView.setTag(holder);
 
 			} else {
@@ -159,6 +155,7 @@ public class RecordingListFragment extends ListFragment {
 			// holder.img.setBackgroundResource((Integer)mData.get(position).get("img"));
 			holder.title.setText((String) mData.get(position).get("title"));
 			holder.info.setText((String) mData.get(position).get("info"));
+
 			holder.conflict.setText((String) mData.get(position).get("conflict"));
 			holder.status.setText((String) mData.get(position).get("status"));
 			convertView.setOnTouchListener(new OnTouchListener() {
@@ -198,6 +195,7 @@ public class RecordingListFragment extends ListFragment {
 					return false;
 				}
 			} );
+
 			//详细Button的事件监听
 			holder.viewBtn.setOnClickListener(new View.OnClickListener() {
 
