@@ -242,7 +242,21 @@ public class FileManagement {
 		}
 		return flag;
 	}
-
+	
+	/**
+	 * 将本地文件列表与在线文件列表进行混合
+	 * 并标记文件状态（本地/云端/同步）
+	 * @param localFileList 本地文件列表
+	 * @param onlineFileList 云端文件列表
+	 * @return 混合后带状态的总文件列表
+	 */
+	private static List<FileDetail> mixFileList(List<FileDetail> localFileList , List<FileDetail> onlineFileList) {
+		
+		
+		return null;
+	}
+	
+	
 	public static void getInputCollection(List list, File filename,
 			Activity activity) {
 		// 创建音频文件,合并的文件放这里

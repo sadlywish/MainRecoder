@@ -15,6 +15,8 @@ public class FileDetail {
 	private long time;// 录音时长
 	private long modiTime;// 最后更改时间
 	private long size;// 文件大小
+	private int status;//文件状态（0:本地/1:云端/2:同步）
+	private boolean conflict;//文件是否冲突
 	private String[] suffix = { "B", "KB", "MB", "GB", "TB" };
 
 	/**

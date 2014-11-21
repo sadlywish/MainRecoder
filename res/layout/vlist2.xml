@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:descendantFocusability="blocksDescendants">
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants" >
 
-    <!--
-	<ImageView android:id="@+id/img" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:layout_margin="5px"/>
-    -->
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp" />
-        
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,22 +29,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="13sp" />
+
             <TextView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:textSize="13sp"
-                android:text="本地" />
+                android:text="本地"
+                android:textSize="13sp" />
+
             <TextView
                 android:id="@+id/conflict"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:textSize="13sp"
+                android:text="有冲突"
                 android:textColor="#FFFF0000"
-                android:text="有冲突" />
-        
+                android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -65,9 +61,9 @@
             android:id="@+id/view_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:focusable="false"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:focusable="false"
             android:text="@string/detail" />
     </LinearLayout>
 

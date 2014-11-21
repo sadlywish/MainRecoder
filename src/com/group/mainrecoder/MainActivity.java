@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (pref.getString("recoderType", null)==null) {
-			pref.edit().putString("recoderType", "amr");
+			pref.edit().putString("recoderType", "amr").commit();
 		}
 		RecoderFactory.setPref(pref);
 		FileManagement.setPref(pref);
