@@ -191,7 +191,12 @@ private void rundownload() {
 //		AlertDialog dialog =builder.setTitle("下载中").setMessage("请稍等").setCancelable(false).show();
 //		Toast.makeText(activity, "同步中，请稍等。", Toast.LENGTH_LONG).show();
 		try {
-			KiiUtil.downloadFlie(activity, "2014.amr");
+//			KiiUtil.downloadFlie(activity, "2014.amr");
+			if(KiiUtil.renameFlie("2014.amr", "2015.amr")){
+				Toast.makeText(activity, "重命名成功", Toast.LENGTH_SHORT).show();
+			}else {
+				Toast.makeText(activity, "重命名失败", Toast.LENGTH_SHORT).show();
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -189,7 +189,74 @@ public class KiiUtil {
 	 * @return 重命名是否成功
 	 */
 	public static boolean renameFlie(String oldName, String newName) {
-		return false;
+		if (isOnlineFileHaveSameName(newName)) {
+			return false;
+		}
+		KiiObject object = KiiObject.createByUri(Uri.parse(findOnlineFileByName(oldName)));
+		try {
+			object.refresh();
+		} catch (BadRequestException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		} catch (UnauthorizedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		} catch (ForbiddenException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		} catch (ConflictException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		} catch (NotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		} catch (UndefinedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		}
+		object.set("name", newName);
+		try {
+			object.save();
+		} catch (BadRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (ConflictException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (ForbiddenException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (UnauthorizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (UndefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -204,11 +271,11 @@ public class KiiUtil {
 	}
 
 	/**
-	 * 根据文件名寻找完整在线文件信息
+	 * 根据文件名寻找完整在线文件uri
 	 * 
 	 * @param fileName
 	 *            待查查找的文件名
-	 * @return 完整信息
+	 * @return 字符串化URI
 	 */
 	public static String findOnlineFileByName(String fileName) {
 		KiiBucket bucket = null;
@@ -226,24 +293,7 @@ public class KiiUtil {
 			e1.printStackTrace();
 		}
 		final List<String> list = new ArrayList<String>();
-//			bucket.query(new KiiQueryCallBack<KiiObject>() {
-//				@Override
-//				public void onTaskCancel(int token) {
-//					// TODO Auto-generated method stub
-//					super.onTaskCancel(token);
-//					System.out.println("exit");
-//				}
-//				@Override
-//				public void onQueryCompleted(int token,
-//						KiiQueryResult<KiiObject> queryResult,
-//						Exception exception) {
-//					// TODO Auto-generated method stub
-//					super.onQueryCompleted(token, queryResult, exception);
-//					exception.printStackTrace();
-//					list.add(queryResult.getResult().get(0).toUri().toString());
-//					System.out.println("size:"+list.size());
-//				}
-//			}, query);
+
 		List<KiiObject> result =null;
 		try {
 			result = bucket.query(query).getResult();
@@ -270,5 +320,69 @@ public class KiiUtil {
 			e.printStackTrace();
 		}
 		return result.get(0).toUri().toString();
+	}
+	/**
+	 * 根据文件名寻找完整在线文件uri
+	 * 
+	 * @param fileName
+	 *            待查查找的文件名
+	 * @return 文件名是否存在
+	 */
+	public static boolean isOnlineFileHaveSameName(String fileName) {
+		KiiBucket bucket = null;
+		try {
+			bucket = Kii.bucket(AppConstants.APP_BUCKET_NAME);
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			return true;
+		}
+		KiiQuery query = null;
+		try {
+			query = new KiiQuery(KiiClause.equals("name", fileName));
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return true;
+		}
+		final List<String> list = new ArrayList<String>();
+
+		List<KiiObject> result =null;
+		try {
+			result = bucket.query(query).getResult();
+		} catch (BadRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		} catch (UnauthorizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		} catch (ForbiddenException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		} catch (ConflictException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		} catch (UndefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		}
+		if (list.size()>0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
