@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Process;
+import android.os.StrictMode;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
@@ -50,6 +51,8 @@ public class RecoderActivity extends ActionBarActivity implements testInterface 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+	    StrictMode.setThreadPolicy(policy);
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		RecoderFactory.setPref(pref);
 		RecoderFactory.setInterface1(this);

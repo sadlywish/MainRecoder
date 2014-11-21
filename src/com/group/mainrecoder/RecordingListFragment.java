@@ -48,7 +48,6 @@ public class RecordingListFragment extends ListFragment {
 	private float downX;//手指点下时获取的x坐标
 	private float upX;  //手指离开时获取的x坐标
 	private Button viewBtn;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,12 +62,32 @@ public class RecordingListFragment extends ListFragment {
 	private List<Map<String, Object>> getData() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
-		List<FileDetail> details = FileManagement.getMusicFileList();
+		List<FileDetail> details=null;
+		try {
+			details = FileManagement.getMusicFileList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (int i = 0; i < details.size(); i++) {
 
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("title", details.get(i).getFileName());
 			map.put("info", "时间长度:" + details.get(i).getSringTime());
+			if (details.get(i).getStatus()==0) {
+				map.put("status", "本地");
+			}else if (details.get(i).getStatus()==1) {
+				map.put("status", "云端");
+			} else {
+				map.put("status", "同步");
+			}
+			
+			if (details.get(i).isConflict()) {
+				map.put("conflict", "冲突");
+			} else {
+				map.put("conflict","" );
+			}
+
 			// map.put("img", R.drawable.i1);
 			list.add(map);
 		}
@@ -80,6 +99,8 @@ public class RecordingListFragment extends ListFragment {
 		public TextView title;
 		public TextView info;
 		public Button viewBtn;
+		public TextView status;
+		public TextView conflict;
 		// public Button playBtn;
 	}
 
@@ -121,6 +142,8 @@ public class RecordingListFragment extends ListFragment {
 				convertView = mInflater.inflate(R.layout.vlist2, null);
 				holder.title = (TextView) convertView.findViewById(R.id.title);
 				holder.info = (TextView) convertView.findViewById(R.id.info);
+				holder.conflict =  (TextView) convertView.findViewById(R.id.conflict);
+				holder.status =  (TextView) convertView.findViewById(R.id.status);
 				holder.viewBtn = (Button) convertView.findViewById(R.id.view_btn);
 				// holder.playBtn = (Button) convertView
 				// .findViewById(R.id.play_btn);
@@ -134,7 +157,8 @@ public class RecordingListFragment extends ListFragment {
 			// holder.img.setBackgroundResource((Integer)mData.get(position).get("img"));
 			holder.title.setText((String) mData.get(position).get("title"));
 			holder.info.setText((String) mData.get(position).get("info"));
-
+			holder.conflict.setText((String) mData.get(position).get("conflict"));
+			holder.status.setText((String) mData.get(position).get("status"));
 			convertView.setOnTouchListener(new OnTouchListener() {
 				
 				@Override
@@ -155,12 +179,11 @@ public class RecordingListFragment extends ListFragment {
 						
 					//手指离开	
 					case MotionEvent.ACTION_UP:
-						
 						upX = event.getX();//获取手指离开时的x坐标
 						System.out.println("結束位置:"+upX);
+
 						break;
 					}
-
 					if(holder.viewBtn != null){
 						if((downX - upX)>35){
 							holder.viewBtn.setVisibility(View.VISIBLE);//显示详细的按钮
@@ -169,6 +192,7 @@ public class RecordingListFragment extends ListFragment {
 						}
 						return false;//释放事件，使onListItemClick可以执行
 					}
+					
 					return false;
 				}
 			} );

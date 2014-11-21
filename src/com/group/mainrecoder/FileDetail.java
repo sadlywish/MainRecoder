@@ -9,6 +9,12 @@ import java.util.Date;
 import java.util.List;
 
 import com.kii.cloud.storage.KiiObject;
+import com.kii.cloud.storage.exception.app.BadRequestException;
+import com.kii.cloud.storage.exception.app.ConflictException;
+import com.kii.cloud.storage.exception.app.ForbiddenException;
+import com.kii.cloud.storage.exception.app.NotFoundException;
+import com.kii.cloud.storage.exception.app.UnauthorizedException;
+import com.kii.cloud.storage.exception.app.UndefinedException;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -46,11 +52,35 @@ public class FileDetail {
 		
 	}
 	public FileDetail(KiiObject object) {
+		try {
+			object.refresh();
+		} catch (BadRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnauthorizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ForbiddenException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConflictException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UndefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.fileName = object.getString("name");
 		this.modiTime = object.getLong("uploadTime");
 		this.size = object.getLong("size");
 		this.time = object.getLong("time");
-		this.status = 2;
+		this.status = 1;
 	}
 	public FileDetail(String fileName, int status){
 		if (status==0|| status ==2) {
@@ -58,7 +88,7 @@ public class FileDetail {
 			this.fileName = fileName;
 			this.modiTime = file.lastModified();
 			this.size = file.length();
-			this.status = 0;
+			this.status = status;
 			//			this.time = this.getAmrDuration(file) + 57600000;
 			try {
 				this.time = this.getDuration(file)+576000000;
