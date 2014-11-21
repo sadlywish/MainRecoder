@@ -52,6 +52,8 @@ public class DetailActivity extends ActionBarActivity {
 	private EditText textView;
 	private Activity activity;
 	private String suffix;
+	private int status;
+	private boolean conflict;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class DetailActivity extends ActionBarActivity {
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 	    StrictMode.setThreadPolicy(policy);
 		fileName = getIntent().getStringExtra("filename");
+		status = getIntent().getIntExtra("status",0);
+		conflict = getIntent().getBooleanExtra("conflict", false);
 		activity = this;
 		this.getOverflowMenu();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -154,8 +158,21 @@ public class DetailActivity extends ActionBarActivity {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-//							KiiUtil.uploadFile(activity, fileName);
-							rundownload();
+							if (!conflict) {
+								//							KiiUtil.uploadFile(activity, fileName);
+								//							rundownload();
+								if (status == 0) {
+									System.out.println("上传");
+									KiiUtil.uploadFile(activity, fileName);
+								} else if (status == 1) {
+									System.out.println("下载");
+									KiiUtil.downloadFlie(activity, fileName);
+								} else {
+									Toast.makeText(activity, "同步已完成，不需要同步", Toast.LENGTH_SHORT).show();
+								}
+							}else {
+								Toast.makeText(activity, "文件存在冲突，请重命名后再同步", Toast.LENGTH_SHORT).show();
+							}
 						}
 					}).setNegativeButton("返回", null).create().show();
 			// Dialog dialog = builder.create();
@@ -191,12 +208,13 @@ private void rundownload() {
 //		AlertDialog dialog =builder.setTitle("下载中").setMessage("请稍等").setCancelable(false).show();
 //		Toast.makeText(activity, "同步中，请稍等。", Toast.LENGTH_LONG).show();
 		try {
-//			KiiUtil.downloadFlie(activity, "2014.amr");
-			if(KiiUtil.renameFlie("2014.amr", "2015.amr")){
-				Toast.makeText(activity, "重命名成功", Toast.LENGTH_SHORT).show();
-			}else {
-				Toast.makeText(activity, "重命名失败", Toast.LENGTH_SHORT).show();
-			}
+//			KiiUtil.uploadFile(activity, fileName);
+//			KiiUtil.downloadFlie(activity, fileName);
+//			if(KiiUtil.renameFlie("2014.amr", "2015.amr")){
+//				Toast.makeText(activity, "重命名成功", Toast.LENGTH_SHORT).show();
+//			}else {
+//				Toast.makeText(activity, "重命名失败", Toast.LENGTH_SHORT).show();
+//			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

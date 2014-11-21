@@ -74,6 +74,8 @@ public class RecordingListFragment extends ListFragment {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("title", details.get(i).getFileName());
 			map.put("info", "时间长度:" + details.get(i).getSringTime());
+			map.put("statusKey", details.get(i).getStatus());
+			map.put("conflictKey", details.get(i).isConflict());
 			if (details.get(i).getStatus()==0) {
 				map.put("status", "本地");
 			}else if (details.get(i).getStatus()==1) {
@@ -207,8 +209,10 @@ public class RecordingListFragment extends ListFragment {
 					System.out.println(count + "");
 					Intent intent = new Intent(getActivity(),
 							DetailActivity.class);
-					intent.putExtra("filename",
-							(String) mData.get(count).get("title"));
+					intent.putExtra("filename", (String) mData.get(position).get("title"));
+					intent.putExtra("status", (Integer)mData.get(position).get("statusKey"));
+					intent.putExtra("conflict", (Boolean)mData.get(position).get("conflictKey"));
+
 					if(viewBtn != null){
 						viewBtn.setVisibility(View.GONE);//点击详细按钮后，隐藏按钮
 					}
@@ -255,6 +259,8 @@ public class RecordingListFragment extends ListFragment {
 		// builder.setTitle("播放").setMessage("该播就播吧").create().show();
 		Intent intent = new Intent(getActivity(), PlayerActivity.class);
 		intent.putExtra("filename", (String) mData.get(position).get("title"));
+		intent.putExtra("status", (Integer)mData.get(position).get("statusKey"));
+		intent.putExtra("conflict", (Boolean)mData.get(position).get("conflictKey"));
 
 		getActivity().startActivity(intent);
 	}
