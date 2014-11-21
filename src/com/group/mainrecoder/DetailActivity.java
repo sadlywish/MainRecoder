@@ -155,7 +155,7 @@ public class DetailActivity extends ActionBarActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 //							KiiUtil.uploadFile(activity, fileName);
-							handler.post(runThread);
+							rundownload();
 						}
 					}).setNegativeButton("返回", null).create().show();
 			// Dialog dialog = builder.create();
@@ -164,7 +164,6 @@ public class DetailActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 	private void getOverflowMenu() {
 
 		try {
@@ -179,17 +178,26 @@ public class DetailActivity extends ActionBarActivity {
 			e.printStackTrace();
 		}
 	}
+private void rundownload() {
+	handler.post(runThread);
+}
  Handler handler = new Handler();
- Runnable runThread = new Runnable() {
+ Runnable runThread =new Runnable() {
 	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-		AlertDialog dialog =builder.setTitle("下载中").setMessage("请稍等").setCancelable(false).show();
-		KiiUtil.downloadFlie(activity, "2014.amr");
-		dialog.dismiss();
-		Toast.makeText(activity, "同步完成", Toast.LENGTH_SHORT).show();
+//		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+//		AlertDialog dialog =builder.setTitle("下载中").setMessage("请稍等").setCancelable(false).show();
+//		Toast.makeText(activity, "同步中，请稍等。", Toast.LENGTH_LONG).show();
+		try {
+			KiiUtil.downloadFlie(activity, "2014.amr");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		dialog.dismiss();
+//		Toast.makeText(activity, "同步完成", Toast.LENGTH_SHORT).show();
 	}
 };
 }
