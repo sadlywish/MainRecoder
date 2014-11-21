@@ -87,6 +87,7 @@ public class KiiUtil {
 		for (int i = 0; i < objects.size(); i++) {
 			details.add(new FileDetail(objects.get(i)));
 		}
+		System.out.println(details.size()+"ge");
 		return details;
 	}
 
@@ -101,7 +102,7 @@ public class KiiUtil {
 		KiiBucket bucket = Kii.bucket(AppConstants.APP_BUCKET_NAME);
 		KiiObject object = bucket.object();
 		object.set("name", fileInfo.getFileName());
-		object.set("uploadTime", SystemClock.elapsedRealtime());
+		object.set("uploadTime", SystemClock.currentThreadTimeMillis());
 		object.set("size", fileInfo.getsizeall());
 		object.set("time", fileInfo.getTime());
 		File baseFile = new File(FileManagement.getPlayerDir() + fileName);
@@ -132,7 +133,7 @@ public class KiiUtil {
 			e.printStackTrace();
 			return false;
 		}
-
+		Toast.makeText(activity, "同步完成", Toast.LENGTH_SHORT);
 		return true;
 	}
 
@@ -388,6 +389,9 @@ public class KiiUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if (result.size()<1) {
+			return null;
+		}
 		return result.get(0).toUri().toString();
 	}
 	/**
@@ -453,5 +457,41 @@ public class KiiUtil {
 		} else {
 			return false;
 		}
+	}
+	
+	public static boolean deleteOnlineFile(String fileName) {
+		KiiObject object  = KiiObject.createByUri(Uri.parse(findOnlineFileByName(fileName)));
+		try {
+			object.delete();
+		} catch (BadRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (UnauthorizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (ForbiddenException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (ConflictException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (UndefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }

@@ -108,6 +108,7 @@ public class RecoderFactory {
 				setTimestep(1);
 			}
 			setRecoding(true);
+			count++;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -127,18 +128,17 @@ public class RecoderFactory {
 		mediaRecorder.stop();
 		mediaRecorder.release();
 		mediaRecorder = null;
-		count++;
 	}
 
 	public static String save (String fileName , Activity activity){
 		String finalName = FileManagement.saveTempFile(fileName, count, activity);
 		FileManagement.clearTempDir();
-		count = 1;
+		count = 0;
 		return finalName;
 	}
 	public static void cancel(){
 		FileManagement.clearTempDir();
-		count = 1;
+		count = 0;
 	}
 	public static boolean ispause(){
 		if (count>1) {

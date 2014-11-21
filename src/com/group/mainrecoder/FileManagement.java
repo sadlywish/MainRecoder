@@ -91,7 +91,7 @@ public class FileManagement {
 		for (int i = 0; i < nameList.size(); i++) {
 			fileList.add(new FileDetail(nameList.get(i)));
 		}
-		return fileList;
+		return mixFileList(fileList, KiiUtil.getOnlineFileList());
 	}
 
 	/**
@@ -251,9 +251,30 @@ public class FileManagement {
 	 * @return 混合后带状态的总文件列表
 	 */
 	private static List<FileDetail> mixFileList(List<FileDetail> localFileList , List<FileDetail> onlineFileList) {
-		
-		
-		return null;
+		List<FileDetail> list = localFileList;
+		boolean needAdd = true;
+		for (int i = 0; i < onlineFileList.size(); i++) {
+			for (int j = 0; j < list.size(); j++) {
+				needAdd =true;
+				if (onlineFileList.get(i).getFileName().equals(list.get(j).getFileName())) {
+					if (onlineFileList.get(i).getsizeall()==list.get(j).getsizeall()) {
+						list.get(j).setStatus(2);
+						needAdd =false;
+						break;
+					}else {
+						list.get(j).setConflict(true);
+						onlineFileList.get(i).setConflict(true);
+						list.add(j, onlineFileList.get(i));
+						needAdd =false;
+						break;
+					}
+				}
+			}
+			if (needAdd) {
+				list.add(onlineFileList.get(i));
+			}
+		}
+		return list;
 	}
 	
 	
