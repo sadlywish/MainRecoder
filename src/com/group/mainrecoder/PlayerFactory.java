@@ -195,7 +195,7 @@ public class PlayerFactory {
 	public static boolean seekTo(int pro) {
 		if (isPrepare) {
 			int progress = (int) ((double)mediaPlayer.getDuration() * ((double)pro / 10000f));
-			mediaPlayer.seekTo(progress);
+ 			mediaPlayer.seekTo(progress);
 			return true;
 		} else {
 			return false;
