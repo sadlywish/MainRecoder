@@ -1136,13 +1136,13 @@ containing a value of this type.
         public static final int never=0x7f060009;
         public static final int none=0x7f060010;
         public static final int normal=0x7f060000;
-        public static final int notice=0x7f06004c;
+        public static final int notice=0x7f06004b;
         public static final int pause=0x7f060041;
         public static final int progress_circular=0x7f060018;
         public static final int progress_horizontal=0x7f060019;
         public static final int radio=0x7f06002f;
-        public static final int rename=0x7f06004d;
-        public static final int rename_Suffix=0x7f06004e;
+        public static final int rename=0x7f06004c;
+        public static final int rename_Suffix=0x7f06004d;
         public static final int search_badge=0x7f060032;
         public static final int search_bar=0x7f060031;
         public static final int search_button=0x7f060033;
@@ -1164,7 +1164,7 @@ containing a value of this type.
         public static final int stop=0x7f060042;
         public static final int submit_area=0x7f060039;
         public static final int tabMode=0x7f060002;
-        public static final int text=0x7f06004b;
+        public static final int text=0x7f06004e;
         public static final int timestep=0x7f06003f;
         public static final int title=0x7f06002b;
         public static final int top_action_bar=0x7f060020;
@@ -1227,10 +1227,11 @@ containing a value of this type.
         public static final int activity_filelist=0x7f030019;
         public static final int activity_main=0x7f03001a;
         public static final int activity_player=0x7f03001b;
-        public static final int listadpater=0x7f03001c;
-        public static final int renamedialog=0x7f03001d;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001e;
-        public static final int vlist2=0x7f03001f;
+        public static final int deletedialog=0x7f03001c;
+        public static final int listadpater=0x7f03001d;
+        public static final int renamedialog=0x7f03001e;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001f;
+        public static final int vlist2=0x7f030020;
     }
     public static final class menu {
         public static final int blankmenu=0x7f0e0000;

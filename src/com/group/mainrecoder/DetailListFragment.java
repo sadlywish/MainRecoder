@@ -26,13 +26,15 @@ import android.widget.TextView;
 public class DetailListFragment extends ListFragment {
 
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
-
+	private static String[] statusList={"本地文件","云端文件","完成同步"};
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		String fileName = getActivity().getIntent().getStringExtra("filename");
-		String[] titles = {"文件名:", "时长:", "最后修改时间:","文件体积" };
-		FileDetail detail = new FileDetail(fileName);
-		String[] details = {detail.getFileName(), detail.getSringTime(), detail.getModiTimeTime(),detail.getSize() };
+		int status = getActivity().getIntent().getIntExtra("status",0);
+		boolean conflict = getActivity().getIntent().getBooleanExtra("conflict", false);
+		String[] titles = {"文件名:", "时长:", "最后修改时间:","文件体积","存储状态" };
+		FileDetail detail = new FileDetail(fileName, status);
+		String[] details = {detail.getFileName(), detail.getSringTime(), detail.getModiTimeTime(),detail.getSize() ,statusList[status]};
 		System.out.println(detail.getsizeall());
 		List<Map<String, String>> textList = new ArrayList<Map<String,String>>();
 		for (int i = 0; i < details.length; i++) {

@@ -8,8 +8,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.kii.cloud.storage.KiiObject;
+import com.kii.cloud.storage.exception.app.BadRequestException;
+import com.kii.cloud.storage.exception.app.ConflictException;
+import com.kii.cloud.storage.exception.app.ForbiddenException;
+import com.kii.cloud.storage.exception.app.NotFoundException;
+import com.kii.cloud.storage.exception.app.UnauthorizedException;
+import com.kii.cloud.storage.exception.app.UndefinedException;
+
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.SystemClock;
 
 public class FileDetail {
 	private String fileName;// 文件名
@@ -17,13 +26,13 @@ public class FileDetail {
 	private long modiTime;// 最后更改时间
 	private long size;// 文件大小
 	private int status;//文件状态（0:本地/1:云端/2:同步）
-	private boolean conflict;//文件是否冲突
+	private boolean conflict=false;//文件是否冲突
 	private String[] suffix = { "B", "KB", "MB", "GB", "TB" };
 	public long getsizeall(){
 		return this.size;
 	}
 	/**
-	 * 利用文件名获取对应信息的构造方法
+	 * 利用本地文件名获取对应信息的构造方法
 	 * 
 	 * @param filename
 	 */
@@ -32,6 +41,7 @@ public class FileDetail {
 		this.fileName = filename;
 		this.modiTime = file.lastModified();
 		this.size = file.length();
+		this.status = 0;
 		//			this.time = this.getAmrDuration(file) + 57600000;
 		try {
 			this.time = this.getDuration(file)+576000000;
@@ -39,15 +49,64 @@ public class FileDetail {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public FileDetail(String fileName, int status){
 		
+	}
+	public FileDetail(KiiObject object) {
+		try {
+			object.refresh();
+		} catch (BadRequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnauthorizedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ForbiddenException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConflictException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UndefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.fileName = object.getString("name");
+		this.modiTime = object.getLong("uploadTime");
+		this.size = object.getLong("size");
+		this.time = object.getLong("time");
+		this.status = 1;
+	}
+	public FileDetail(String fileName, int status){
+		if (status==0|| status ==2) {
+			File file = new File(FileManagement.getPlayerDir() + fileName);
+			this.fileName = fileName;
+			this.modiTime = file.lastModified();
+			this.size = file.length();
+			this.status = status;
+			//			this.time = this.getAmrDuration(file) + 57600000;
+			try {
+				this.time = this.getDuration(file)+576000000;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}else if (status ==1) {
+			FileDetail detail = KiiUtil.findOnlineFileDedailByName(fileName);
+			this.fileName = detail.fileName;
+			this.modiTime = detail.modiTime;
+			this.size = detail.size;
+			this.time = detail.time;
+			this.status = 1;
+		}
 	}
 	
-	public FileDetail(String fileName, List<FileDetail> baseList){
-		
-	}
 	
 	public String getFileName() {
 		return fileName;

@@ -23,12 +23,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Process;
+import android.os.StrictMode;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -48,6 +51,8 @@ public class RecoderActivity extends ActionBarActivity implements testInterface 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+	    StrictMode.setThreadPolicy(policy);
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		RecoderFactory.setPref(pref);
 		RecoderFactory.setInterface1(this);
@@ -113,7 +118,6 @@ public class RecoderActivity extends ActionBarActivity implements testInterface 
 				chronometer.stop();
 				RecoderFactory.pause();
 				start.setEnabled(true);
-				stop.setEnabled(false);
 				pause.setEnabled(false);
 			}
 		});
@@ -127,22 +131,26 @@ public class RecoderActivity extends ActionBarActivity implements testInterface 
 				RecoderFactory.stop();
 				LayoutInflater inflater = LayoutInflater.from(activity);
 				final View view = inflater.inflate(R.layout.renamedialog, null);
-				TextView suffix = (TextView) view
+				final TextView suffix = (TextView) view
 						.findViewById(R.id.rename_Suffix);
-				suffix.setText("."+pref.getString("recoderType", "amr"));
-				textView = (EditText) view.findViewById(R.id.rename);
-				SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-				textView.setText(df.format(new Date()));
+				try {
+					suffix.setText("."+pref.getString("recoderType", "amr"));
+					textView = (EditText) view.findViewById(R.id.rename);
+					SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+					textView.setText(df.format(new Date()));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 				builder.setTitle("保存录音").setView(view)
 						.setNegativeButton("保存", new OnClickListener() {
 
 							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
+							public void onClick(DialogInterface dialog,int which) {
 								String name = RecoderFactory.save(textView
 										.getText().toString(), activity);
-								Toast.makeText(activity, name,
+								Toast.makeText(activity,"成功保存文件："+ name+suffix.getText(),
 										Toast.LENGTH_SHORT).show();
 							}
 						}).setPositiveButton("放弃", new OnClickListener() {
@@ -210,6 +218,7 @@ public class RecoderActivity extends ActionBarActivity implements testInterface 
 		return;
 	}
 
+	
 	@Override
 	public void test() {
 		System.out.println("test");
